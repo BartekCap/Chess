@@ -16,7 +16,7 @@ import com.capgemini.chess.algorithms.pieces.Piece;
  * @author Michal Bejm
  *
  */
-public class Board {
+public class Board implements Cloneable{
 	
 	public static final int SIZE = 8;
 	
@@ -25,12 +25,6 @@ public class Board {
 	private BoardState state;
 	
 	public Board() {
-	}
-
-	public Board(Board board) {
-		this.pieces = board.getPieces();
-		this.moveHistory = board.getMoveHistory();
-		this.state = board.getState();
 	}
 	
 	public List<Move> getMoveHistory() {
@@ -68,5 +62,20 @@ public class Board {
 	 */
 	public Piece getPieceAt(Coordinate coordinate) {
 		return pieces[coordinate.getX()][coordinate.getY()];
+	}
+
+	@Override
+	public Board clone(){
+		Board clone;
+		try{
+			clone = (Board) super.clone();
+		} catch (CloneNotSupportedException e){
+			throw new RuntimeException("Board cloning go wrong!");
+		}
+		clone.pieces = this.pieces.clone();
+		for (int i = 0; i < 8; i++) {
+			clone.pieces[i] = this.pieces[i].clone();
+		}
+		return clone;
 	}
 }

@@ -237,8 +237,7 @@ public class BoardManager {
 	//TODO Obczaic w fazie testowania jak dzialaja exceptiony tutaj
 	private Move validateMove(Coordinate from, Coordinate to) throws InvalidMoveException, KingInCheckException {
 		checkIfCoordinatesAreEqual(from, to);	
-		board.getPieceAt(from).checkIfMoveIsValid(board, from, to);
-		MoveType moveType = board.getPieceAt(from).checkIfMoveIsValid(null, from, to);
+		MoveType moveType = board.getPieceAt(from).checkIfMoveIsValid(board, from, to);
 		isKingInCheckAfterMove(from, to);
 		Move move = new Move(from, to, moveType, board.getPieceAt(from));
 		return move;
@@ -250,7 +249,7 @@ public class BoardManager {
 	}
 
 	private Board createTemprorartBoard(Board board, Coordinate from, Coordinate to) {
-		Board tempBoard = new Board(board);
+		Board tempBoard =board.clone();
 		tempBoard.setPieceAt(tempBoard.getPieceAt(from), to);
 		tempBoard.setPieceAt(null, from);
 		return tempBoard;
@@ -263,9 +262,13 @@ public class BoardManager {
 	}
 
 	private boolean isKingInCheck(Color kingColor) {
-		
-		// TODO please add implementation here
-		return false;
+		boolean isKingInCheck=true;
+		try{
+		new CheckKing(board).checkIfKingIsInCheck(kingColor);
+		} catch (KingInCheckException ex){
+			isKingInCheck=false;
+		}
+		return isKingInCheck;
 	}
 
 	private boolean isAnyMoveValid(Color nextMoveColor) {

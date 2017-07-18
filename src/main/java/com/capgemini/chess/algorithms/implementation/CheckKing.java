@@ -6,6 +6,7 @@ import com.capgemini.chess.algorithms.data.Coordinate;
 import com.capgemini.chess.algorithms.data.enums.Color;
 import com.capgemini.chess.algorithms.data.generated.Board;
 import com.capgemini.chess.algorithms.implementation.exceptions.InvalidMoveException;
+import com.capgemini.chess.algorithms.implementation.exceptions.KingInCheckException;
 import com.capgemini.chess.algorithms.pieces.*;
 
 public class CheckKing {
@@ -16,15 +17,18 @@ public class CheckKing {
 		this.board = board;
 	}
 
-	public void checkIfKingIsInCheck(Color color) throws InvalidMoveException{
+	public void checkIfKingIsInCheck(Color color) throws KingInCheckException {
 		List<Coordinate> piecesThatAreDangerousForKing = findOtherPieceThenKing(color);
 		Coordinate kingsCoordinate = findKing(color);
-		for(Coordinate c : piecesThatAreDangerousForKing){
-			//TODO jestli checkIfMoveIsValid wyrzuca wyjatek dla nie mozliwych ruchow to moze tak zostac jesli nie to bedzie trzeba obsluzyc to ponizej
-			board.getPieceAt(c).checkIfMoveIsValid(null, c, kingsCoordinate);
-		}	
+		for (Coordinate c : piecesThatAreDangerousForKing) {
+			try {
+				board.getPieceAt(c).checkIfMoveIsValid(null, c, kingsCoordinate);
+			} catch (InvalidMoveException ex) {
+				throw new KingInCheckException();
+			}
+		}
 	}
-	
+
 	private Coordinate findKing(Color color) {
 		Coordinate kingsCoordinate;
 		for (int rowBoard = 0; rowBoard < Board.SIZE; rowBoard++) {
@@ -36,10 +40,10 @@ public class CheckKing {
 				}
 			}
 		}
-		//TODO Co tutaj zwrocic czy moze lepiej rzucic wyjatkiem?
+		// TODO Co tutaj zwrocic czy moze lepiej rzucic wyjatkiem?
 		return null;
 	}
-	
+
 	private List<Coordinate> findOtherPieceThenKing(Color color) {
 		Coordinate pieceCoordinate;
 		List<Coordinate> piecesCoordinates = new ArrayList<>();
@@ -47,7 +51,7 @@ public class CheckKing {
 			for (int columnBoard = 0; columnBoard < Board.SIZE; columnBoard++) {
 				Piece actualPiece = board.getPieces()[rowBoard][columnBoard];
 				if ((actualPiece instanceof Piece && !(actualPiece instanceof King))
-						&& actualPiece.getColor() == color) {
+						&& actualPiece.getColor() != color) {
 					pieceCoordinate = new Coordinate(rowBoard, columnBoard);
 					piecesCoordinates.add(pieceCoordinate);
 				}

@@ -164,10 +164,12 @@ public class BoardManagerTest {
 		// given
 		Board board = new Board();
 		board.setPieceAt(new Bishop(Color.WHITE), new Coordinate(0, 6));
+		board.setPieceAt(new King(Color.WHITE), new Coordinate(7, 7));
 		
 		// when
 		BoardManager boardManager = new BoardManager(board);
 		Move move = boardManager.performMove(new Coordinate(0, 6), new Coordinate(6, 0));
+		
 		
 		// then
 		assertEquals(MoveType.ATTACK, move.getType());
