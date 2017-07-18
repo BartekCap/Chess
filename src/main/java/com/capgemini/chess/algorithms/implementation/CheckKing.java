@@ -16,7 +16,16 @@ public class CheckKing {
 		this.board = board;
 	}
 
-	public Coordinate findKing(Color color) {
+	public void checkIfKingIsInCheck(Color color) throws InvalidMoveException{
+		List<Coordinate> piecesThatAreDangerousForKing = findOtherPieceThenKing(color);
+		Coordinate kingsCoordinate = findKing(color);
+		for(Coordinate c : piecesThatAreDangerousForKing){
+			//TODO jestli checkIfMoveIsValid wyrzuca wyjatek dla nie mozliwych ruchow to moze tak zostac jesli nie to bedzie trzeba obsluzyc to ponizej
+			board.getPieceAt(c).checkIfMoveIsValid(null, c, kingsCoordinate);
+		}	
+	}
+	
+	private Coordinate findKing(Color color) {
 		Coordinate kingsCoordinate;
 		for (int rowBoard = 0; rowBoard < Board.SIZE; rowBoard++) {
 			for (int columnBoard = 0; columnBoard < Board.SIZE; columnBoard++) {
@@ -31,15 +40,13 @@ public class CheckKing {
 		return null;
 	}
 	
-	public List<Coordinate> findQueenBishopAndRook(Color color) {
+	private List<Coordinate> findOtherPieceThenKing(Color color) {
 		Coordinate pieceCoordinate;
 		List<Coordinate> piecesCoordinates = new ArrayList<>();
 		for (int rowBoard = 0; rowBoard < Board.SIZE; rowBoard++) {
 			for (int columnBoard = 0; columnBoard < Board.SIZE; columnBoard++) {
 				Piece actualPiece = board.getPieces()[rowBoard][columnBoard];
-				if ((actualPiece instanceof Queen ||
-						actualPiece instanceof Bishop ||
-						actualPiece instanceof Rook)
+				if ((actualPiece instanceof Piece && !(actualPiece instanceof King))
 						&& actualPiece.getColor() == color) {
 					pieceCoordinate = new Coordinate(rowBoard, columnBoard);
 					piecesCoordinates.add(pieceCoordinate);
@@ -47,14 +54,5 @@ public class CheckKing {
 			}
 		}
 		return piecesCoordinates;
-	}
-
-	public void checkIfKingIsInCheck(Color color) throws InvalidMoveException{
-		List<Coordinate> piecesThatAreDangerousForKing = findQueenBishopAndRook(color);
-		Coordinate kingsCoordinate = findKing(color);
-		for(Coordinate c : piecesThatAreDangerousForKing){
-			//TODO jestli checkIfMoveIsValid wyrzuca wyjatek dla nie mozliwych ruchow to moze tak zostac jesli nie to bedzie trzeba obsluzyc to ponizej
-			board.getPieceAt(c).checkIfMoveIsValid(c, kingsCoordinate);
-			}	
 	}
 }

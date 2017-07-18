@@ -27,6 +27,12 @@ public class Board {
 	public Board() {
 	}
 
+	public Board(Board board) {
+		this.pieces = board.getPieces();
+		this.moveHistory = board.getMoveHistory();
+		this.state = board.getState();
+	}
+	
 	public List<Move> getMoveHistory() {
 		return moveHistory;
 	}
