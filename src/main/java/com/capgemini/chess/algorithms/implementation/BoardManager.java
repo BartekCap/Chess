@@ -239,12 +239,11 @@ public class BoardManager {
 		
 		MoveType moveType = board.getPieceAt(from).checkIfMoveIsValid(from, to);
 		
-		CheckKing checkKing = new CheckKing();
-		kingCheck.
+		CheckKing checkKing = new CheckKing(board);
 
 		
 		
-		Move move = new Move(from, to, moveType ,board.getPieceAt(from));
+		Move move = new Move(from, to, moveType, board.getPieceAt(from));
 		// TODO please add implementation here
 		return move;
 	}
