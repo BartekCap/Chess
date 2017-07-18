@@ -177,6 +177,24 @@ public class BoardManagerTest {
 	}
 	
 	@Test
+	public void testPerformMoveBishopCapture() throws InvalidMoveException {
+		// given
+		Board board = new Board();
+		board.setPieceAt(new Bishop(Color.WHITE), new Coordinate(0, 6));
+		board.setPieceAt(new King(Color.WHITE), new Coordinate(7, 7));
+		board.setPieceAt(new Bishop(Color.BLACK), new Coordinate(6, 0));
+		
+		// when
+		BoardManager boardManager = new BoardManager(board);
+		Move move = boardManager.performMove(new Coordinate(0, 6), new Coordinate(6, 0));
+		
+		
+		// then
+		assertEquals(MoveType.CAPTURE, move.getType());
+		assertEquals(new Bishop(Color.WHITE), move.getMovedPiece());
+	}
+	
+	@Test
 	public void testPerformMovePawnAttack() throws InvalidMoveException {
 		// given
 		Board board = new Board();

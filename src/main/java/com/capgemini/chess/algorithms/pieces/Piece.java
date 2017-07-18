@@ -7,9 +7,9 @@ import com.capgemini.chess.algorithms.data.generated.Board;
 import com.capgemini.chess.algorithms.implementation.exceptions.InvalidMoveException;
 
 public abstract class Piece {
+	
 	private Color color;
 	
-	public abstract MoveType checkIfMoveIsValid (Board board, Coordinate from, Coordinate to) throws InvalidMoveException;
 
 	public Piece(){
 	}
@@ -18,14 +18,22 @@ public abstract class Piece {
 		this.color = color;
 	}
 
-	public Color getColor() {
-		return color;
-	}
+	public abstract MoveType checkIfMoveIsValid (Board board, Coordinate from, Coordinate to) throws InvalidMoveException;
 
-	public void setColor(Color color) {
-		this.color = color;
+	protected MoveType checkDestinationPlace(Board board, Coordinate from, Coordinate to) throws InvalidMoveException {
+		if(board.getPieceAt(to)!=null){
+			if(board.getPieceAt(from).getColor()==board.getPieceAt(to).getColor()){
+				throw new InvalidMoveException("In destination place is your piece!");
+			}
+			else{
+				return MoveType.CAPTURE;
+			}
+		}
+		else {
+			return MoveType.ATTACK;
+		}
 	}
-
+	
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -48,4 +56,11 @@ public abstract class Piece {
 		return true;
 	}
  
+	public Color getColor() {
+		return color;
+	}
+	
+	public void setColor(Color color) {
+		this.color = color;
+	}
 }

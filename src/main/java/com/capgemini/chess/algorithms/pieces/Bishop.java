@@ -8,25 +8,15 @@ import com.capgemini.chess.algorithms.implementation.exceptions.InvalidMoveExcep
 
 public class Bishop extends Piece {
 
+	public Bishop(Color color) {
+		super(color);
+	}
+	
 	@Override
 	public MoveType checkIfMoveIsValid(Board board, Coordinate from, Coordinate to) throws InvalidMoveException {
-		checkIfBishopCanMoveThatWay(from, to);
+		checkIfCanMoveThatWay(from, to);
 		chcekIfThereIsPieceOnWay(board, from, to);
-		return checkDestinationPlace(board, from, to);
-	}
-
-	private MoveType checkDestinationPlace(Board board, Coordinate from, Coordinate to) throws InvalidMoveException {
-		if(board.getPieceAt(to)!=null){
-			if(board.getPieceAt(from).getColor()==board.getPieceAt(to).getColor()){
-				throw new InvalidMoveException("In destination place is your piece!");
-			}
-			else{
-				return MoveType.CAPTURE;
-			}
-		}
-		else {
-			return MoveType.ATTACK;
-		}
+		return super.checkDestinationPlace(board, from, to);
 	}
 
 	//TODO Czy da się to zrefaktorowac? - jakos podzielić na mniejsze - chodzi o to ze znaki przy iteratorze muszą się zmieniać!
@@ -63,18 +53,11 @@ public class Bishop extends Piece {
 				}
 			}
 		}
-		else{
-			throw new InvalidMoveException("Piece destination is equal to Piece place!");
-		}
 	}
 
-	private void checkIfBishopCanMoveThatWay(Coordinate from, Coordinate to) throws InvalidMoveException {
+	private void checkIfCanMoveThatWay(Coordinate from, Coordinate to) throws InvalidMoveException {
 		if(!(Math.abs(from.getX()-to.getX())==Math.abs(from.getY()-to.getY()))){
 			throw new InvalidMoveException("Bishop cant move that way");
 		}
-	}
-
-	public Bishop(Color color) {
-		super(color);
 	}
 }
