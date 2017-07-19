@@ -165,7 +165,7 @@ public class BoardManager {
 		this.board.setPieceAt(new Rook(Color.BLACK), new Coordinate(7, 7));
 
 		for (int x = 0; x < Board.SIZE; x++) {
-			this.board.setPieceAt(new BlackPawn(), new Coordinate(x, 6));
+			this.board.setPieceAt(new Pawn(Color.BLACK), new Coordinate(x, 6));
 		}
 
 		this.board.setPieceAt(new Rook(Color.WHITE), new Coordinate(0, 0));
@@ -178,7 +178,7 @@ public class BoardManager {
 		this.board.setPieceAt(new Rook(Color.WHITE), new Coordinate(7, 0));
 
 		for (int x = 0; x < Board.SIZE; x++) {
-			this.board.setPieceAt(new WhitePawn(), new Coordinate(x, 1));
+			this.board.setPieceAt(new Pawn(Color.WHITE), new Coordinate(x, 1));
 		}
 	}
 
@@ -204,10 +204,10 @@ public class BoardManager {
 	}
 
 	private void performPromotion(Move move, Piece movedPiece) {
-		if (movedPiece instanceof WhitePawn && move.getTo().getY() == (Board.SIZE - 1)) {
+		if (movedPiece.equals(new Pawn(Color.WHITE)) && move.getTo().getY() == (Board.SIZE - 1)) {
 			this.board.setPieceAt(new Queen(Color.WHITE), move.getTo());
 		}
-		if (movedPiece instanceof BlackPawn && move.getTo().getY() == 0) {
+		if (movedPiece.equals(new Pawn(Color.BLACK)) && move.getTo().getY() == 0) {
 			this.board.setPieceAt(new Queen(Color.BLACK), move.getTo());
 		}
 	}
@@ -225,7 +225,7 @@ public class BoardManager {
 	}
 
 	private void addEnPassant(Move move) {
-		Move lastMove = this.board.getMoveHistory().get(this.board.getMoveHistory().size() - 1);
+		Move lastMove = this.board.getMoveHistory().get(this.board.getMoveHistory().size() - 2);
 		this.board.setPieceAt(null, lastMove.getTo());
 	}
 
@@ -236,16 +236,15 @@ public class BoardManager {
 	
 	//TODO Obczaic w fazie testowania jak dzialaja exceptiony tutaj
 	private Move validateMove(Coordinate from, Coordinate to) throws InvalidMoveException, KingInCheckException {
-		checkIfCoordinatesAreEqual(from, to);	
+		initialValidation(from, to);	
 		MoveType moveType = board.getPieceAt(from).checkIfMoveIsValid(board, from, to);
 		isKingInCheckAfterMove(from, to);
-		Move move = new Move(from, to, moveType, board.getPieceAt(from));
-		return move;
+		return new Move(from, to, moveType, board.getPieceAt(from));
 	}
 
 	private void isKingInCheckAfterMove(Coordinate from, Coordinate to) throws InvalidMoveException {
 		Board boardAfterMove = createTemproraryBoard(board, from, to);
-		new CheckKing(boardAfterMove).checkIfKingIsInCheck(board.getPieceAt(from).getColor());
+		new CheckKing(boardAfterMove).validateIfKingIsInCheck(board.getPieceAt(from).getColor());
 	}
 
 	private Board createTemproraryBoard(Board board, Coordinate from, Coordinate to) {
@@ -254,17 +253,22 @@ public class BoardManager {
 		tempBoard.setPieceAt(null, from);
 		return tempBoard;
 	}
+	
+	private void initialValidation(Coordinate from, Coordinate to) throws InvalidMoveException{
+		validateIfCoordinateIsOutOfBoard(from);
+		validateIfCoordinateIsOutOfBoard(to);
+	}
 
-	private void checkIfCoordinatesAreEqual(Coordinate from, Coordinate to) throws InvalidMoveException  {
-		if(from.equals(to)){
-			throw new InvalidMoveException("You cant move to your actual place!");
+	private void validateIfCoordinateIsOutOfBoard(Coordinate coordinate) throws InvalidMoveException {
+		if(coordinate.getX()<0 || coordinate.getX()>Board.SIZE || coordinate.getY()<0 || coordinate.getY()>Board.SIZE){
+			throw new InvalidMoveException("Your coordinate is out of board!");
 		}
 	}
 
 	private boolean isKingInCheck(Color kingColor) {
 		boolean isKingInCheck=true;
 		try{
-		new CheckKing(board).checkIfKingIsInCheck(kingColor);
+		new CheckKing(board).validateIfKingIsInCheck(kingColor);
 		} catch (KingInCheckException ex){
 			isKingInCheck=false;
 		}

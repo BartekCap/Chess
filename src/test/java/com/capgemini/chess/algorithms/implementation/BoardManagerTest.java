@@ -44,7 +44,7 @@ public class BoardManagerTest {
 				}
 			}
 		}
-		assertEquals(new WhitePawn(), boardManager.getBoard().getPieceAt(new Coordinate(5, 1)));
+		assertEquals(new Pawn(Color.WHITE), boardManager.getBoard().getPieceAt(new Coordinate(5, 1)));
 		assertEquals(new King(Color.WHITE), boardManager.getBoard().getPieceAt(new Coordinate(4, 0)));
 		assertEquals(new Bishop(Color.WHITE), boardManager.getBoard().getPieceAt(new Coordinate(5, 0)));
 		assertEquals(new Rook(Color.BLACK), boardManager.getBoard().getPieceAt(new Coordinate(0, 7)));
@@ -138,7 +138,7 @@ public class BoardManagerTest {
 		assertNull(boardManager.getBoard().getPieceAt(new Coordinate(2, 4)));
 		assertNull(boardManager.getBoard().getPieceAt(new Coordinate(1, 4)));
 		assertNotNull(boardManager.getBoard().getPieceAt(new Coordinate(2, 5)));
-		assertEquals(new WhitePawn(), boardManager.getBoard().getPieceAt(new Coordinate(2, 5)));
+		assertEquals(new Pawn(Color.WHITE), boardManager.getBoard().getPieceAt(new Coordinate(2, 5)));
 		assertEquals(31, calculateNumberOfPieces(boardManager.getBoard()));
 	}
 	
@@ -199,7 +199,7 @@ public class BoardManagerTest {
 		// given
 		Board board = new Board();
 		board.getMoveHistory().add(createDummyMove(board));
-		board.setPieceAt(new BlackPawn(), new Coordinate(4, 6));
+		board.setPieceAt(new Pawn(Color.BLACK), new Coordinate(4, 6));
 		
 		// when
 		BoardManager boardManager = new BoardManager(board);
@@ -207,7 +207,7 @@ public class BoardManagerTest {
 		
 		// then
 		assertEquals(MoveType.ATTACK, move.getType());
-		assertEquals(new BlackPawn(), move.getMovedPiece());
+		assertEquals(new Pawn(Color.BLACK), move.getMovedPiece());
 	}
 
 	@Test
@@ -247,7 +247,7 @@ public class BoardManagerTest {
 		// given
 		Board board = new Board();
 		board.setPieceAt(new Queen(Color.WHITE), new Coordinate(5, 0));
-		board.setPieceAt(new BlackPawn(), new Coordinate(7, 2));
+		board.setPieceAt(new Pawn(Color.BLACK), new Coordinate(7, 2));
 		
 		// when
 		BoardManager boardManager = new BoardManager(board);
@@ -298,8 +298,8 @@ public class BoardManagerTest {
 		BoardManager boardManager = new BoardManager(board);
 		
 		board.getMoveHistory().add(createDummyMove(board));
-		board.setPieceAt(new WhitePawn(), new Coordinate(1, 4));
-		board.setPieceAt(new BlackPawn(), new Coordinate(2, 6));
+		board.setPieceAt(new Pawn(Color.WHITE), new Coordinate(1, 4));
+		board.setPieceAt(new Pawn(Color.BLACK), new Coordinate(2, 6));
 		boardManager.performMove(new Coordinate(2, 6), new Coordinate(2, 4));
 		
 		// when
@@ -307,7 +307,7 @@ public class BoardManagerTest {
 		
 		// then
 		assertEquals(MoveType.EN_PASSANT, move.getType());
-		assertEquals(new WhitePawn(), move.getMovedPiece());
+		assertEquals(new Pawn(Color.WHITE), move.getMovedPiece());
 	}
 	
 	@Test
@@ -388,7 +388,7 @@ public class BoardManagerTest {
 	public void testPerformMoveInvalidPawnBackwardMove() {
 		// given
 		Board board = new Board();
-		board.setPieceAt(new WhitePawn(), new Coordinate(1, 2));
+		board.setPieceAt(new Pawn(Color.WHITE), new Coordinate(1, 2));
 		
 		// when
 		BoardManager boardManager = new BoardManager(board);
@@ -407,7 +407,7 @@ public class BoardManagerTest {
 	public void testPerformMoveInvalidPawnAttackDestination() {
 		// given
 		Board board = new Board();
-		board.setPieceAt(new WhitePawn(), new Coordinate(1, 2));
+		board.setPieceAt(new Pawn(Color.WHITE), new Coordinate(1, 2));
 		
 		// when
 		BoardManager boardManager = new BoardManager(board);
@@ -426,7 +426,7 @@ public class BoardManagerTest {
 	public void testPerformMoveInvalidPawnAttackDistance() {
 		// given
 		Board board = new Board();
-		board.setPieceAt(new WhitePawn(), new Coordinate(1, 2));
+		board.setPieceAt(new Pawn(Color.WHITE), new Coordinate(1, 2));
 		
 		// when
 		BoardManager boardManager = new BoardManager(board);
@@ -445,8 +445,8 @@ public class BoardManagerTest {
 	public void testPerformMoveInvalidPawnCaptureDestination() {
 		// given
 		Board board = new Board();
-		board.setPieceAt(new WhitePawn(), new Coordinate(1, 2));
-		board.setPieceAt(new BlackPawn(), new Coordinate(1, 3));
+		board.setPieceAt(new Pawn(Color.WHITE), new Coordinate(1, 2));
+		board.setPieceAt(new Pawn(Color.BLACK), new Coordinate(1, 3));
 		
 		// when
 		BoardManager boardManager = new BoardManager(board);
@@ -523,7 +523,7 @@ public class BoardManagerTest {
 		// given
 		Board board = new Board();
 		board.setPieceAt(new Queen(Color.WHITE), new Coordinate(1, 1));
-		board.setPieceAt(new BlackPawn(), new Coordinate(4, 4));
+		board.setPieceAt(new Pawn(Color.BLACK), new Coordinate(4, 4));
 		
 		// when
 		BoardManager boardManager = new BoardManager(board);
@@ -543,7 +543,8 @@ public class BoardManagerTest {
 		// given
 		Board board = new Board();
 		board.setPieceAt(new Rook(Color.WHITE), new Coordinate(3, 0));
-		board.setPieceAt(new WhitePawn(), new Coordinate(3, 2));
+		board.setPieceAt(new Pawn(Color.WHITE), new Coordinate(3, 2));
+		board.setPieceAt(new King(Color.WHITE), new Coordinate(1, 2));
 		
 		// when
 		BoardManager boardManager = new BoardManager(board);
@@ -563,7 +564,7 @@ public class BoardManagerTest {
 		// given
 		Board board = new Board();
 		board.setPieceAt(new Knight(Color.WHITE), new Coordinate(5, 6));
-		board.setPieceAt(new WhitePawn(), new Coordinate(3, 5));
+		board.setPieceAt(new Pawn(Color.WHITE), new Coordinate(3, 5));
 		
 		// when
 		BoardManager boardManager = new BoardManager(board);
@@ -840,8 +841,8 @@ public class BoardManagerTest {
 		BoardManager boardManager = new BoardManager(new Board());
 		
 		Move move = new Move();
-		boardManager.getBoard().setPieceAt(new WhitePawn(), new Coordinate(0, 0));
-		move.setMovedPiece(new WhitePawn());
+		boardManager.getBoard().setPieceAt(new Pawn(Color.WHITE), new Coordinate(0, 0));
+		move.setMovedPiece(new Pawn(Color.WHITE));
 		move.setFrom(new Coordinate(0, 0));
 		move.setTo(new Coordinate(0, 0));
 		move.setType(MoveType.ATTACK);

@@ -17,12 +17,12 @@ public class CheckKing {
 		this.board = board;
 	}
 
-	public void checkIfKingIsInCheck(Color color) throws KingInCheckException {
+	public void validateIfKingIsInCheck(Color color) throws KingInCheckException {
 		List<Coordinate> piecesThatAreDangerousForKing = findOtherPieceThenKing(color);
 		Coordinate kingsCoordinate = findKing(color);
-		for (Coordinate c : piecesThatAreDangerousForKing) {
+		for (Coordinate coord : piecesThatAreDangerousForKing) {
 			try {
-				board.getPieceAt(c).checkIfMoveIsValid(null, c, kingsCoordinate);
+				board.getPieceAt(coord).checkIfMoveIsValid(board, coord, kingsCoordinate);
 			} catch (InvalidMoveException ex) {
 				throw new KingInCheckException();
 			}
@@ -49,9 +49,10 @@ public class CheckKing {
 		List<Coordinate> piecesCoordinates = new ArrayList<>();
 		for (int rowBoard = 0; rowBoard < Board.SIZE; rowBoard++) {
 			for (int columnBoard = 0; columnBoard < Board.SIZE; columnBoard++) {
+				
+				//TODO ssss
 				Piece actualPiece = board.getPieces()[rowBoard][columnBoard];
-				if ((actualPiece instanceof Piece && !(actualPiece instanceof King))
-						&& actualPiece.getColor() != color) {
+				if (actualPiece!=null && actualPiece.getColor()!=color) {
 					pieceCoordinate = new Coordinate(rowBoard, columnBoard);
 					piecesCoordinates.add(pieceCoordinate);
 				}

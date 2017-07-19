@@ -64,18 +64,18 @@ public class Board implements Cloneable{
 		return pieces[coordinate.getX()][coordinate.getY()];
 	}
 
-	@Override
-	public Board clone(){
-		Board clone;
-		try{
-			clone = (Board) super.clone();
-		} catch (CloneNotSupportedException e){
-			throw new RuntimeException("Board cloning go wrong!");
-		}
-		clone.pieces = this.pieces.clone();
-		for (int i = 0; i < 8; i++) {
-			clone.pieces[i] = this.pieces[i].clone();
-		}
-		return clone;
+		@Override
+		public Board clone(){
+			Board clone;
+			try{
+				clone = (Board) super.clone();
+			} catch (CloneNotSupportedException e){
+				throw new RuntimeException("Board cloning go wrong!");
+			}
+			clone.pieces = this.pieces.clone();
+			for (int i = 0; i < 8; i++) {
+				clone.pieces[i] = this.pieces[i].clone();
+			}
+			return clone;
 	}
 }

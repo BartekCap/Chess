@@ -10,45 +10,28 @@ public class Rook extends Piece {
 
 	@Override
 	public MoveType checkIfMoveIsValid(Board board, Coordinate from, Coordinate to) throws InvalidMoveException {
-		checkIfCanMoveThatWay(from, to);
-		chcekIfThereIsPieceOnWay(board, from, to);		
-		return getReturnMoveTypeForRook(board, from, to);
-	}
-
-	private void chcekIfThereIsPieceOnWay(Board board, Coordinate from, Coordinate to) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	private void checkIfCanMoveThatWay(Coordinate from, Coordinate to) throws InvalidMoveException {
-		if(!(from.getX()==to.getX())&&!(from.getY()==to.getY())){
-			throw new InvalidMoveException("Rook cant move that way");
+		validateThatPieceCanMoveThatDirection(from, to);
+		int iterationRestriction;
+		if (from.getX() - to.getX() != 0) {
+			iterationRestriction = Math.abs(from.getX() - to.getX());
+		} else {
+			iterationRestriction = Math.abs(from.getY() - to.getY());
 		}
-	}
-
-	private MoveType getReturnMoveTypeForRook(Board board, Coordinate from, Coordinate to) throws InvalidMoveException {
-		MoveType moveType = super.checkDestinationPlace(board, from, to);
-		if(isCastling()){
-			moveType = MoveType.CASTLING;
-		}
-		return moveType;
-	}
-	
-	private boolean isCastling() {
-		// TODO Auto-generated method stub
-		//TODO Czy castling moze wykonac rook czy king? czy moze obydwoje?!
-		return false;
+		validateMoveRuleAndClearPath(iterationRestriction, board, from, to);
+		return getMoveType(board, from, to);
 	}
 
 	@Override
-	protected MoveType checkDestinationPlace(Board board, Coordinate from, Coordinate to) throws InvalidMoveException {
-		// TODO Auto-generated method stub
-		return super.checkDestinationPlace(board, from, to);
+	protected void validateThatPieceCanMoveThatDirection(Coordinate from, Coordinate to) throws InvalidMoveException {
+		int deltaX = from.getX() - to.getX();
+		int deltaY = from.getY() - to.getY();
+		if (!(isDirectionN(deltaX, deltaY) || isDirectionW(deltaX, deltaY) || isDirectionE(deltaX, deltaY)
+				|| isDirectionS(deltaX, deltaY))) {
+			throw new InvalidMoveException("Piece cant move there. It is against rules for this piece");
+		}
 	}
-
-
 
 	public Rook(Color color) {
 		super(color);
-	}	
+	}
 }

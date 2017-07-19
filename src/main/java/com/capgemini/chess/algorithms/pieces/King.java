@@ -9,7 +9,19 @@ public class King extends Piece {
 
 	@Override
 	public MoveType checkIfMoveIsValid(Board board, Coordinate from, Coordinate to) {
+		
+		if(isCastling())
+		{
+			return MoveType.CASTLING;
+		}
+		//TODO reszte wykonac jak w innych pionkach
+		
 		return null;
+	}
+
+	private boolean isCastling() {
+		// TODO Auto-generated method stub
+		return false;
 	}
 
 	public King(Color color) {

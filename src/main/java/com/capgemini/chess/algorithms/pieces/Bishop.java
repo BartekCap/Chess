@@ -14,50 +14,21 @@ public class Bishop extends Piece {
 	
 	@Override
 	public MoveType checkIfMoveIsValid(Board board, Coordinate from, Coordinate to) throws InvalidMoveException {
-		checkIfCanMoveThatWay(from, to);
-		chcekIfThereIsPieceOnWay(board, from, to);
-		return super.checkDestinationPlace(board, from, to);
+		validateThatPieceCanMoveThatDirection(from, to);
+		int iterationRestriction = Math.abs(from.getX()-to.getX());
+		validateMoveRuleAndClearPath(iterationRestriction, board, from, to);
+		return getMoveType(board, from, to);
 	}
 
-	//TODO Czy da się to zrefaktorowac? - jakos podzielić na mniejsze - chodzi o to ze znaki przy iteratorze muszą się zmieniać!
-	private void chcekIfThereIsPieceOnWay(Board board, Coordinate from, Coordinate to) throws InvalidMoveException {
-		int row = from.getX()-to.getX();
-		int column = from.getY()-to.getY();
-		
-		if(row>0 && column>0){
-			for(int placeIterator=1; placeIterator<Math.abs(row);placeIterator++){
-				if(board.getPieceAt(new Coordinate(from.getX()-placeIterator, from.getY()-placeIterator))!=null){
-					throw new InvalidMoveException("There is piece on way!");
-				}
-			}
-		}
-		else if (row>0 && column<0)
-		{
-			for(int placeIterator=1; placeIterator<Math.abs(row);placeIterator++){
-				if(board.getPieceAt(new Coordinate(from.getX()-placeIterator, from.getY()+placeIterator))!=null){
-					throw new InvalidMoveException("There is piece on way!");
-				}
-			}
-		}
-		else if(row<0 && column>0){
-			for(int placeIterator=1; placeIterator<Math.abs(row);placeIterator++){
-				if(board.getPieceAt(new Coordinate(from.getX()+placeIterator, from.getY()-placeIterator))!=null){
-					throw new InvalidMoveException("There is piece on way!");
-				}
-			}
-		}
-		else if(row<0 && column<0){
-			for(int placeIterator=1; placeIterator<Math.abs(row);placeIterator++){
-				if(board.getPieceAt(new Coordinate(from.getX()+placeIterator, from.getY()+placeIterator))!=null){
-					throw new InvalidMoveException("There is piece on way!!");
-				}
-			}
+	@Override
+	protected void validateThatPieceCanMoveThatDirection(Coordinate from, Coordinate to) throws InvalidMoveException {
+		int deltaX = from.getX() - to.getX();
+		int deltaY = from.getY() - to.getY();
+		if(!(isDirectionNE(deltaX, deltaY) || isDirectionNW(deltaX, deltaY) || isDirectionSE(deltaX, deltaY) || isDirectionSW(deltaX, deltaY))){
+			throw new InvalidMoveException("Piece cant move there. It is against rules for this piece");
 		}
 	}
 
-	private void checkIfCanMoveThatWay(Coordinate from, Coordinate to) throws InvalidMoveException {
-		if(!(Math.abs(from.getX()-to.getX())==Math.abs(from.getY()-to.getY()))){
-			throw new InvalidMoveException("Bishop cant move that way");
-		}
-	}
+
+	
 }
