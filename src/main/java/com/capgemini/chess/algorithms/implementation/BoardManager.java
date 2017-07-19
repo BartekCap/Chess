@@ -244,11 +244,11 @@ public class BoardManager {
 	}
 
 	private void isKingInCheckAfterMove(Coordinate from, Coordinate to) throws InvalidMoveException {
-		Board boardAfterMove = createTemprorartBoard(board, from, to);
+		Board boardAfterMove = createTemproraryBoard(board, from, to);
 		new CheckKing(boardAfterMove).checkIfKingIsInCheck(board.getPieceAt(from).getColor());
 	}
 
-	private Board createTemprorartBoard(Board board, Coordinate from, Coordinate to) {
+	private Board createTemproraryBoard(Board board, Coordinate from, Coordinate to) {
 		Board tempBoard =board.clone();
 		tempBoard.setPieceAt(tempBoard.getPieceAt(from), to);
 		tempBoard.setPieceAt(null, from);
@@ -256,7 +256,7 @@ public class BoardManager {
 	}
 
 	private void checkIfCoordinatesAreEqual(Coordinate from, Coordinate to) throws InvalidMoveException  {
-		if(from==to){
+		if(from.equals(to)){
 			throw new InvalidMoveException("You cant move to your actual place!");
 		}
 	}

@@ -20,9 +20,10 @@ public class Rook extends Piece {
 		
 	}
 
-	private void checkIfCanMoveThatWay(Coordinate from, Coordinate to) {
-		// TODO Auto-generated method stub
-		
+	private void checkIfCanMoveThatWay(Coordinate from, Coordinate to) throws InvalidMoveException {
+		if(!(from.getX()==to.getX())&&!(from.getY()==to.getY())){
+			throw new InvalidMoveException("Rook cant move that way");
+		}
 	}
 
 	private MoveType getReturnMoveTypeForRook(Board board, Coordinate from, Coordinate to) throws InvalidMoveException {
