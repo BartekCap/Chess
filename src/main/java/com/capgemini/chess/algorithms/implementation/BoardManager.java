@@ -255,6 +255,7 @@ public class BoardManager {
 	}
 	
 	private void initialValidation(Coordinate from, Coordinate to) throws InvalidMoveException{
+		//TODO dodac froom!=to!!!
 		validateIfCoordinateIsOutOfBoard(from);
 		validateIfCoordinateIsOutOfBoard(to);
 	}

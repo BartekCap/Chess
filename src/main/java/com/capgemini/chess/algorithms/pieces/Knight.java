@@ -23,18 +23,9 @@ private void setDeltaXAndDeltaY(Coordinate from, Coordinate to) {
 
 	@Override
 	protected void validateThatPieceCanMoveThatDirection(Coordinate from, Coordinate to) throws InvalidMoveException {
-		if(	!(Math.abs(deltaX)==2 && Math.abs(deltaY)==1)){
+		if(	!(Math.abs(deltaX)==2 && Math.abs(deltaY)==1)||(Math.abs(deltaX)==1 && Math.abs(deltaY)==2)){
 			throw new InvalidMoveException("Knight cant move that way!");
 		}	
-		
-		(deltaX==2 && deltaY==-1) ||
-		(deltaX==1 && deltaY==-2) ||
-		(deltaX==-1 && deltaY==-2) ||
-		(deltaX==-2 && deltaY==-3) ||
-		(deltaX==-2 && deltaY==1) ||
-		(deltaX==-1 && deltaY==2) ||
-		(deltaX==1 && deltaY==2) ||
-		(deltaX==2 && deltaY==1)
 	}
 	
 	

@@ -8,7 +8,7 @@ import com.capgemini.chess.algorithms.implementation.exceptions.InvalidMoveExcep
 
 public abstract class Piece {
 
-	private Color color;
+	protected Color color;
 
 	public Piece() {
 	}

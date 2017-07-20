@@ -17,8 +17,8 @@ public class ValidateKing {
 		this.board = board;
 	}
 
-	public void validateCastling(Color color, List<Coordinate> coordinates) throws InvalidMoveException {
-		List<Coordinate> opponentPieces = findOpponentPieces(color);
+	public void validateCastling(Color actualColor, List<Coordinate> coordinates) throws InvalidMoveException {
+		List<Coordinate> opponentPieces = findOpponentPieces(actualColor);
 		for (Coordinate coordinate : coordinates) {
 			for (Coordinate coord : opponentPieces) {
 				try {
