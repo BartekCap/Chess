@@ -25,7 +25,7 @@ public class Bishop extends Piece {
 		int deltaX = from.getX() - to.getX();
 		int deltaY = from.getY() - to.getY();
 		if(!(isDirectionNE(deltaX, deltaY) || isDirectionNW(deltaX, deltaY) || isDirectionSE(deltaX, deltaY) || isDirectionSW(deltaX, deltaY))){
-			throw new InvalidMoveException("Piece cant move there. It is against rules for this piece");
+			throw new InvalidMoveException("Bishop cant move there. It is against rules for this piece");
 		}
 	}
 

@@ -27,7 +27,7 @@ public class Queen extends Piece {
 		int deltaY = from.getY() - to.getY();
 		if (!(isDirectionN(deltaX, deltaY) || isDirectionW(deltaX, deltaY) || isDirectionE(deltaX, deltaY) || isDirectionS(deltaX, deltaY)
 				|| isDirectionNE(deltaX, deltaY) || isDirectionSE(deltaX, deltaY) || isDirectionSW(deltaX, deltaY) || isDirectionNW(deltaX, deltaY))) {
-			throw new InvalidMoveException("Piece cant move there. It is against rules for this piece");
+			throw new InvalidMoveException("Queen cant move there. It is against rules for this piece");
 		}
 	}
 	public Queen(Color color) {

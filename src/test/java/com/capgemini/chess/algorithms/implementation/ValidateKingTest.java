@@ -12,7 +12,7 @@ import com.capgemini.chess.algorithms.pieces.Bishop;
 import com.capgemini.chess.algorithms.pieces.King;
 import com.capgemini.chess.algorithms.pieces.Pawn;
 
-public class CheckKingTest {
+public class ValidateKingTest {
 
 	@Test
 	public void shouldThrowInvalidMoveException() {
@@ -22,7 +22,7 @@ public class CheckKingTest {
 		board.setPieceAt(new Pawn(Color.BLACK), new Coordinate(1, 6));
 		board.setPieceAt(new Bishop(Color.WHITE), new Coordinate(2, 5));
 		boolean exceptionThrown=false;
-		CheckKing checkKing = new CheckKing(board);
+		ValidateKing checkKing = new ValidateKing(board);
 		//when
 		try{
 			checkKing.validateIfKingIsInCheck(Color.BLACK);
@@ -41,7 +41,7 @@ public class CheckKingTest {
 		board.setPieceAt(new Pawn(Color.BLACK), new Coordinate(1, 6));
 		board.setPieceAt(new Bishop(Color.WHITE), new Coordinate(2, 5));
 		boolean exceptionThrown=false;
-		CheckKing checkKing = new CheckKing(board);
+		ValidateKing checkKing = new ValidateKing(board);
 		//when
 		try{
 			checkKing.validateIfKingIsInCheck(Color.BLACK);

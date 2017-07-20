@@ -21,7 +21,6 @@ public class BishopTest {
 		Coordinate to = new Coordinate(1, 6);
 		board.setPieceAt(bishop, from);
 		board.setPieceAt(new Pawn(Color.BLACK),to );
-		board.setPieceAt(new King(Color.BLACK), new Coordinate(7, 7));
 		//when
 		MoveType moveType = bishop.checkIfMoveIsValid(board,from , to);
 		//then
@@ -36,7 +35,6 @@ public class BishopTest {
 		Coordinate from = new Coordinate(2, 5);
 		Coordinate to = new Coordinate(1, 6);
 		board.setPieceAt(bishop, from);
-		board.setPieceAt(new King(Color.BLACK), new Coordinate(7, 7));
 		//when
 		MoveType moveType = bishop.checkIfMoveIsValid(board,from , to);
 		//then
@@ -44,7 +42,7 @@ public class BishopTest {
 	}
 	
 	@Test
-	public void shouldThrowExceptionThatBishopCantMoveThatWay() throws InvalidMoveException {
+	public void shouldThrowExceptionWhenDestinationIsAgainstRuleles(){
 		//given
 		Board board = new Board();
 		Piece bishop = new Bishop(Color.WHITE);
@@ -52,9 +50,8 @@ public class BishopTest {
 		Coordinate to = new Coordinate(7, 2);
 		board.setPieceAt(bishop, from);
 		board.setPieceAt(new Pawn(Color.BLACK),to );
-		board.setPieceAt(new King(Color.BLACK), new Coordinate(7, 7));
 		boolean isException;
-		String expectedMessage="Invalid move! Piece cant move there. It is against rules for this piece";
+		String expectedMessage="Invalid move! Bishop cant move there. It is against rules for this piece";
 		String message = "";
 		//when
 		try{

@@ -244,7 +244,7 @@ public class BoardManager {
 
 	private void isKingInCheckAfterMove(Coordinate from, Coordinate to) throws InvalidMoveException {
 		Board boardAfterMove = createTemproraryBoard(board, from, to);
-		new CheckKing(boardAfterMove).validateIfKingIsInCheck(board.getPieceAt(from).getColor());
+		new ValidateKing(boardAfterMove).validateIfKingIsInCheck(board.getPieceAt(from).getColor());
 	}
 
 	private Board createTemproraryBoard(Board board, Coordinate from, Coordinate to) {
@@ -268,7 +268,7 @@ public class BoardManager {
 	private boolean isKingInCheck(Color kingColor) {
 		boolean isKingInCheck=true;
 		try{
-		new CheckKing(board).validateIfKingIsInCheck(kingColor);
+		new ValidateKing(board).validateIfKingIsInCheck(kingColor);
 		} catch (KingInCheckException ex){
 			isKingInCheck=false;
 		}

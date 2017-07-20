@@ -17,10 +17,6 @@ public abstract class Piece {
 		this.color = color;
 	}
 
-	protected enum Direction {
-		N, NE, E, SE, S, SW, W, NW
-	}
-
 	public abstract MoveType checkIfMoveIsValid(Board board, Coordinate from, Coordinate to)
 			throws InvalidMoveException;
 
@@ -63,7 +59,7 @@ public abstract class Piece {
 
 	}
 
-	private void validateIfSquaresAreNotNull(int signX, int signY, int iteratorRestriction, Board board,
+	protected void validateIfSquaresAreNotNull(int signX, int signY, int iteratorRestriction, Board board,
 			Coordinate from, Coordinate to) throws InvalidMoveException {
 		for (int placeIterator = 1; placeIterator < iteratorRestriction; placeIterator++) {
 			if (board.getPieceAt(

@@ -9,18 +9,31 @@ import com.capgemini.chess.algorithms.implementation.exceptions.InvalidMoveExcep
 import com.capgemini.chess.algorithms.implementation.exceptions.KingInCheckException;
 import com.capgemini.chess.algorithms.pieces.*;
 
-public class CheckKing {
+public class ValidateKing {
 
 	private Board board;
 
-	public CheckKing(Board board) {
+	public ValidateKing(Board board) {
 		this.board = board;
 	}
 
+	public void validateCastling(Color color, List<Coordinate> coordinates) throws InvalidMoveException {
+		List<Coordinate> opponentPieces = findOpponentPieces(color);
+		for (Coordinate coordinate : coordinates) {
+			for (Coordinate coord : opponentPieces) {
+				try {
+					board.getPieceAt(coord).checkIfMoveIsValid(board, coord, coordinate);
+				} catch (InvalidMoveException ex) {
+					throw new InvalidMoveException("You cant do castling because squeres on Kings way can by captured");
+				}
+			}
+		}
+	}
+
 	public void validateIfKingIsInCheck(Color color) throws KingInCheckException {
-		List<Coordinate> piecesThatAreDangerousForKing = findOtherPieceThenKing(color);
+		List<Coordinate> opponentPieces = findOpponentPieces(color);
 		Coordinate kingsCoordinate = findKing(color);
-		for (Coordinate coord : piecesThatAreDangerousForKing) {
+		for (Coordinate coord : opponentPieces) {
 			try {
 				board.getPieceAt(coord).checkIfMoveIsValid(board, coord, kingsCoordinate);
 			} catch (InvalidMoveException ex) {
@@ -44,15 +57,15 @@ public class CheckKing {
 		return null;
 	}
 
-	private List<Coordinate> findOtherPieceThenKing(Color color) {
+	private List<Coordinate> findOpponentPieces(Color color) {
 		Coordinate pieceCoordinate;
 		List<Coordinate> piecesCoordinates = new ArrayList<>();
 		for (int rowBoard = 0; rowBoard < Board.SIZE; rowBoard++) {
 			for (int columnBoard = 0; columnBoard < Board.SIZE; columnBoard++) {
-				
-				//TODO ssss
+
+				// TODO ssss
 				Piece actualPiece = board.getPieces()[rowBoard][columnBoard];
-				if (actualPiece!=null && actualPiece.getColor()!=color) {
+				if (actualPiece != null && actualPiece.getColor() != color) {
 					pieceCoordinate = new Coordinate(rowBoard, columnBoard);
 					piecesCoordinates.add(pieceCoordinate);
 				}

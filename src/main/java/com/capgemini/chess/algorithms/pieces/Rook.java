@@ -27,7 +27,7 @@ public class Rook extends Piece {
 		int deltaY = from.getY() - to.getY();
 		if (!(isDirectionN(deltaX, deltaY) || isDirectionW(deltaX, deltaY) || isDirectionE(deltaX, deltaY)
 				|| isDirectionS(deltaX, deltaY))) {
-			throw new InvalidMoveException("Piece cant move there. It is against rules for this piece");
+			throw new InvalidMoveException("Rook cant move there. It is against rules for this piece");
 		}
 	}
 

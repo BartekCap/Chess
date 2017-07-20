@@ -21,7 +21,6 @@ public class RookTest {
 		Coordinate to = new Coordinate(5, 5);
 		board.setPieceAt(rook, from);
 		board.setPieceAt(new Pawn(Color.BLACK),to );
-		board.setPieceAt(new King(Color.BLACK), new Coordinate(7, 7));
 		//when
 		MoveType moveType = rook.checkIfMoveIsValid(board,from , to);
 		//then
@@ -36,7 +35,6 @@ public class RookTest {
 		Coordinate from = new Coordinate(2, 5);
 		Coordinate to = new Coordinate(7, 5);
 		board.setPieceAt(rook, from);
-		board.setPieceAt(new King(Color.BLACK), new Coordinate(7, 7));
 		//when
 		MoveType moveType = rook.checkIfMoveIsValid(board,from , to);
 		//then
@@ -44,7 +42,7 @@ public class RookTest {
 	}
 	
 	@Test
-	public void shouldThrowExceptionWhenDestinationIsAgainstRules() throws InvalidMoveException {
+	public void shouldThrowExceptionWhenDestinationIsAgainstRules(){
 		//given
 		Board board = new Board();
 		Piece rook = new Rook(Color.WHITE);
@@ -52,9 +50,8 @@ public class RookTest {
 		Coordinate to = new Coordinate(5, 1);
 		board.setPieceAt(rook, from);
 		board.setPieceAt(new Pawn(Color.BLACK),to );
-		board.setPieceAt(new King(Color.BLACK), new Coordinate(7, 7));
 		boolean isException;
-		String expectedMessage="Invalid move! Piece cant move there. It is against rules for this piece";
+		String expectedMessage="Invalid move! Rook cant move there. It is against rules for this piece";
 		String message = "";
 		//when
 		try{
@@ -70,7 +67,7 @@ public class RookTest {
 	}
 	
 	@Test
-	public void shouldThrowExceptionWhenSomethingIsOnWay() throws InvalidMoveException {
+	public void shouldThrowExceptionWhenSomethingIsOnWay(){
 		//given
 		Board board = new Board();
 		Piece rook = new Rook(Color.WHITE);
@@ -78,7 +75,6 @@ public class RookTest {
 		Coordinate to = new Coordinate(6, 5);
 		board.setPieceAt(rook, from);
 		board.setPieceAt(new Pawn(Color.BLACK), new Coordinate(5, 5) );
-		board.setPieceAt(new King(Color.BLACK), new Coordinate(7, 7));
 		boolean isException;
 		String expectedMessage="Invalid move! There is piece on way!";
 		String message = "";

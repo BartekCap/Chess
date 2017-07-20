@@ -21,7 +21,6 @@ public class QueenTest {
 		Coordinate to = new Coordinate(5, 5);
 		board.setPieceAt(queen, from);
 		board.setPieceAt(new Pawn(Color.BLACK),to );
-		board.setPieceAt(new King(Color.BLACK), new Coordinate(7, 7));
 		//when
 		MoveType moveType = queen.checkIfMoveIsValid(board,from , to);
 		//then
@@ -29,7 +28,7 @@ public class QueenTest {
 	}
 
 	@Test
-	public void shouldThrowExceptionWhenDestinationIsAgainstRules() throws InvalidMoveException {
+	public void shouldThrowExceptionWhenDestinationIsAgainstRules() {
 		//given
 		Board board = new Board();
 		Piece queen = new Queen(Color.WHITE);
@@ -37,9 +36,8 @@ public class QueenTest {
 		Coordinate to = new Coordinate(1, 3);
 		board.setPieceAt(queen, from);
 		board.setPieceAt(new Pawn(Color.BLACK),to );
-		board.setPieceAt(new King(Color.BLACK), new Coordinate(7, 7));
 		boolean isException;
-		String expectedMessage="Invalid move! Piece cant move there. It is against rules for this piece";
+		String expectedMessage="Invalid move! Queen cant move there. It is against rules for this piece";
 		String message = "";
 		//when
 		try{
