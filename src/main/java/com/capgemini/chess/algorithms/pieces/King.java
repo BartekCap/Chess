@@ -51,7 +51,7 @@ public class King extends Piece {
 	}
 
 	private void castlingInitialValidation() throws InvalidMoveException {
-		if (Math.abs(deltaX) != 2 && deltaY != 0) {
+		if (!(Math.abs(deltaX) == 2 && deltaY == 0)) {
 			throw new InvalidMoveException();
 		}
 	}
@@ -69,9 +69,16 @@ public class King extends Piece {
 			rookCoordinates = new Coordinate(ROOK_X_COORDINATES_S, from.getY());
 			coordinatesThatCantBeInCapture = createCoordinateToValidateSquares(1, from, to);
 		}
+		validateRookExist(board, rookCoordinates);
 		validateColor(board, from, rookCoordinates);
 		validateRookAndKingHistory(board, rookCoordinates);
 		validateThatKingAndSquaresCanByInDanger(board, coordinatesThatCantBeInCapture);
+	}
+
+	private void validateRookExist(Board board, Coordinate rookCoordinates) throws InvalidMoveException {
+		if(board.getPieceAt(rookCoordinates)==null || !board.getPieceAt(rookCoordinates).equals(new Rook(color))){
+			throw new InvalidMoveException("There is no rook to castling");
+		}
 	}
 
 	private void validateColor(Board board, Coordinate from, Coordinate rookCoordinates) throws InvalidMoveException {

@@ -300,6 +300,8 @@ public class BoardManagerTest {
 		board.getMoveHistory().add(createDummyMove(board));
 		board.setPieceAt(new Pawn(Color.WHITE), new Coordinate(1, 4));
 		board.setPieceAt(new Pawn(Color.BLACK), new Coordinate(2, 6));
+		board.setPieceAt(new King(Color.WHITE), new Coordinate(7, 7));
+		board.setPieceAt(new King(Color.BLACK), new Coordinate(7, 5));
 		boardManager.performMove(new Coordinate(2, 6), new Coordinate(2, 4));
 		
 		// when

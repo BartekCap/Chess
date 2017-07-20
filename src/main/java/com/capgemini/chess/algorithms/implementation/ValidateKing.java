@@ -1,6 +1,5 @@
 package com.capgemini.chess.algorithms.implementation;
 
-import java.util.ArrayList;
 import java.util.List;
 import com.capgemini.chess.algorithms.data.Coordinate;
 import com.capgemini.chess.algorithms.data.enums.Color;
@@ -18,7 +17,7 @@ public class ValidateKing {
 	}
 
 	public void validateCastling(Color actualColor, List<Coordinate> coordinates) throws InvalidMoveException {
-		List<Coordinate> opponentPieces = findOpponentPieces(actualColor);
+		List<Coordinate> opponentPieces = new PieceFinder(board).findOpponentPieces(actualColor);
 		for (Coordinate coordinate : coordinates) {
 			for (Coordinate coord : opponentPieces) {
 				try {
@@ -29,14 +28,20 @@ public class ValidateKing {
 			}
 		}
 	}
-
-	public void validateIfKingIsInCheck(Color color) throws KingInCheckException {
-		List<Coordinate> opponentPieces = findOpponentPieces(color);
+	//TODO tutaj moze byc problem
+	
+	public void validateIfKingIsInCheck(Color color) throws InvalidMoveException, KingInCheckException {
+		List<Coordinate> opponentPieces = new PieceFinder(board).findOpponentPieces(color);
 		Coordinate kingsCoordinate = findKing(color);
+		boolean kingInCheck;
 		for (Coordinate coord : opponentPieces) {
 			try {
 				board.getPieceAt(coord).checkIfMoveIsValid(board, coord, kingsCoordinate);
+				kingInCheck=true;
 			} catch (InvalidMoveException ex) {
+				kingInCheck=false;
+			}
+			if(kingInCheck){
 				throw new KingInCheckException();
 			}
 		}
@@ -57,20 +62,20 @@ public class ValidateKing {
 		return null;
 	}
 
-	private List<Coordinate> findOpponentPieces(Color color) {
-		Coordinate pieceCoordinate;
-		List<Coordinate> piecesCoordinates = new ArrayList<>();
-		for (int rowBoard = 0; rowBoard < Board.SIZE; rowBoard++) {
-			for (int columnBoard = 0; columnBoard < Board.SIZE; columnBoard++) {
-
-				// TODO ssss
-				Piece actualPiece = board.getPieces()[rowBoard][columnBoard];
-				if (actualPiece != null && actualPiece.getColor() != color) {
-					pieceCoordinate = new Coordinate(rowBoard, columnBoard);
-					piecesCoordinates.add(pieceCoordinate);
-				}
-			}
-		}
-		return piecesCoordinates;
-	}
+//	public List<Coordinate> findOpponentPieces(Color color) {
+//		Coordinate pieceCoordinate;
+//		List<Coordinate> piecesCoordinates = new ArrayList<>();
+//		for (int rowBoard = 0; rowBoard < Board.SIZE; rowBoard++) {
+//			for (int columnBoard = 0; columnBoard < Board.SIZE; columnBoard++) {
+//
+//				// TODO ssss
+//				Piece actualPiece = board.getPieces()[rowBoard][columnBoard];
+//				if (actualPiece != null && actualPiece.getColor() != color) {
+//					pieceCoordinate = new Coordinate(rowBoard, columnBoard);
+//					piecesCoordinates.add(pieceCoordinate);
+//				}
+//			}
+//		}
+//		return piecesCoordinates;
+//	}
 }

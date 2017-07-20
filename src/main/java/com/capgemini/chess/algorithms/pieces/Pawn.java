@@ -56,7 +56,8 @@ public class Pawn extends Piece {
 	private void validateDoubleMove(Board board, Coordinate from, Coordinate to) throws InvalidMoveException {
 		int avarageX = (from.getX() + to.getX()) / 2;
 		int avarageY = (from.getY() + to.getY()) / 2;
-		if (board.getPieceAt(new Coordinate(avarageX, avarageY)) != null)
+		//TODO do zrobienia
+		if (board.getPieceAt(new Coordinate(avarageX, avarageY)) != null ||  !(from.getY()==1 || from.getY()==6))
 			throw new InvalidMoveException("Between your piece and destination is another piece!");
 	}
 

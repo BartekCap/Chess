@@ -225,7 +225,7 @@ public class BoardManager {
 	}
 
 	private void addEnPassant(Move move) {
-		Move lastMove = this.board.getMoveHistory().get(this.board.getMoveHistory().size() - 2);
+		Move lastMove = this.board.getMoveHistory().get(this.board.getMoveHistory().size() - 1);
 		this.board.setPieceAt(null, lastMove.getTo());
 	}
 
@@ -242,7 +242,7 @@ public class BoardManager {
 		return new Move(from, to, moveType, board.getPieceAt(from));
 	}
 
-	private void isKingInCheckAfterMove(Coordinate from, Coordinate to) throws InvalidMoveException {
+	private void isKingInCheckAfterMove(Coordinate from, Coordinate to) throws KingInCheckException, InvalidMoveException {
 		Board boardAfterMove = createTemproraryBoard(board, from, to);
 		new ValidateKing(boardAfterMove).validateIfKingIsInCheck(board.getPieceAt(from).getColor());
 	}
@@ -258,28 +258,55 @@ public class BoardManager {
 		//TODO dodac froom!=to!!!
 		validateIfCoordinateIsOutOfBoard(from);
 		validateIfCoordinateIsOutOfBoard(to);
+		validateIfPieceIsNotNull(from);
+		validateTurn(from);
+	}
+
+	private void validateTurn(Coordinate from) throws InvalidMoveException {
+		if(board.getPieceAt(from).getColor()!=calculateNextMoveColor()){
+			throw new InvalidMoveException("Its not your turn");
+		}
+	}
+
+	private void validateIfPieceIsNotNull(Coordinate from) throws InvalidMoveException {
+		if(board.getPieceAt(from)==null){
+			throw new InvalidMoveException("You cant move without pawn");
+		}
 	}
 
 	private void validateIfCoordinateIsOutOfBoard(Coordinate coordinate) throws InvalidMoveException {
-		if(coordinate.getX()<0 || coordinate.getX()>Board.SIZE || coordinate.getY()<0 || coordinate.getY()>Board.SIZE){
+		if(coordinate.getX()<0 || coordinate.getX()>=Board.SIZE || coordinate.getY()<0 || coordinate.getY()>=Board.SIZE){
 			throw new InvalidMoveException("Your coordinate is out of board!");
 		}
 	}
-
+//TODO tautaj moze byc problem 
 	private boolean isKingInCheck(Color kingColor) {
-		boolean isKingInCheck=true;
+		boolean isKingInCheck;
 		try{
 		new ValidateKing(board).validateIfKingIsInCheck(kingColor);
-		} catch (KingInCheckException ex){
+		isKingInCheck=false;
+		} catch (KingInCheckException e){
+			isKingInCheck=true;
+		}catch (InvalidMoveException e) {
 			isKingInCheck=false;
 		}
+		
 		return isKingInCheck;
 	}
 
 	private boolean isAnyMoveValid(Color nextMoveColor) {
-
-		// TODO please add implementation here
-
+		List<Coordinate> yourPiecesCoords = new PieceFinder(board).findYourPieces(nextMoveColor);
+		for(Coordinate iteratorCoord : yourPiecesCoords){
+			for(int iteratorRow=0; iteratorRow<Board.SIZE; iteratorRow++){
+				for(int iteratorColumn=0; iteratorColumn<Board.SIZE; iteratorColumn++){
+					try{
+						validateMove(iteratorCoord, new Coordinate(iteratorRow, iteratorColumn));
+						return true;
+					} catch(InvalidMoveException e){
+					}
+				}
+			}
+		}
 		return false;
 	}
 

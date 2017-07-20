@@ -23,11 +23,11 @@ private void setDeltaXAndDeltaY(Coordinate from, Coordinate to) {
 
 	@Override
 	protected void validateThatPieceCanMoveThatDirection(Coordinate from, Coordinate to) throws InvalidMoveException {
-		if(	!(Math.abs(deltaX)==2 && Math.abs(deltaY)==1)||(Math.abs(deltaX)==1 && Math.abs(deltaY)==2)){
+		if(	(Math.abs(deltaX)==2 && Math.abs(deltaY)==1)||(Math.abs(deltaX)==1 && Math.abs(deltaY)==2)){
+		}else{
 			throw new InvalidMoveException("Knight cant move that way!");
-		}	
+		}
 	}
-	
 	
 	public Knight(Color color) {
 		super(color);
