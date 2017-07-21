@@ -8,7 +8,7 @@ import com.capgemini.chess.algorithms.data.Move;
 import com.capgemini.chess.algorithms.data.enums.Color;
 import com.capgemini.chess.algorithms.data.enums.MoveType;
 import com.capgemini.chess.algorithms.data.generated.Board;
-import com.capgemini.chess.algorithms.implementation.ValidateKing;
+import com.capgemini.chess.algorithms.implementation.KingInCheckValidator;
 import com.capgemini.chess.algorithms.implementation.exceptions.InvalidMoveException;
 
 public class King extends Piece {
@@ -17,12 +17,12 @@ public class King extends Piece {
 	private static final int CASTLING_ITERATOR_S = 3;
 	private static final int ROOK_X_COORDINATES_N = 0;
 	private static final int ROOK_X_COORDINATES_S = 7;
-
 	private int deltaX;
 	private int deltaY;
 
+	//TODO do REFACTORINGU
 	@Override
-	public MoveType checkIfMoveIsValid(Board board, Coordinate from, Coordinate to) throws InvalidMoveException {
+	public MoveType checkIfMoveIsValidForPiece(Board board, Coordinate from, Coordinate to) throws InvalidMoveException {
 		setDeltaXAndDeltaY(from, to);
 
 		if (isCastling(board, from, to)) {
@@ -105,8 +105,8 @@ public class King extends Piece {
 
 	private void validateThatKingAndSquaresCanByInDanger(Board board, List<Coordinate> coordinates)
 			throws InvalidMoveException {
-		ValidateKing validateKing = new ValidateKing(board);
-		validateKing.validateCastling(board.getPieceAt(coordinates.get(0)).getColor(), coordinates);
+		KingInCheckValidator validateKing = new KingInCheckValidator(board);
+		validateKing.validateKingsWayInCastlingThatCantBeInCapture(board.getPieceAt(coordinates.get(0)).getColor(), coordinates);
 	}
 
 	public King(Color color) {

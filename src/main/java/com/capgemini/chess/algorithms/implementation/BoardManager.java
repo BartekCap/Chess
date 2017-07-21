@@ -60,11 +60,8 @@ public class BoardManager {
 	 *             in case move is not valid
 	 */
 	public Move performMove(Coordinate from, Coordinate to) throws InvalidMoveException {
-
 		Move move = validateMove(from, to);
-
 		addMove(move);
-
 		return move;
 	}
 
@@ -74,12 +71,9 @@ public class BoardManager {
 	 * @return state of the chess board
 	 */
 	public BoardState updateBoardState() {
-
 		Color nextMoveColor = calculateNextMoveColor();
-
 		boolean isKingInCheck = isKingInCheck(nextMoveColor);
 		boolean isAnyMoveValid = isAnyMoveValid(nextMoveColor);
-
 		BoardState boardState;
 		if (isKingInCheck) {
 			if (isAnyMoveValid) {
@@ -105,13 +99,9 @@ public class BoardManager {
 	 * @return true if current state repeated at list two times, false otherwise
 	 */
 	public boolean checkThreefoldRepetitionRule() {
-
-		// there is no need to check moves that where before last capture/en
-		// passant/castling
 		int lastNonAttackMoveIndex = findLastNonAttackMoveIndex();
 		List<Move> omittedMoves = this.board.getMoveHistory().subList(0, lastNonAttackMoveIndex);
 		BoardManager simulatedBoardManager = new BoardManager(omittedMoves);
-
 		int counter = 0;
 		for (int i = lastNonAttackMoveIndex; i < this.board.getMoveHistory().size(); i++) {
 			Move moveToAdd = this.board.getMoveHistory().get(i);
@@ -122,7 +112,6 @@ public class BoardManager {
 				counter++;
 			}
 		}
-
 		return counter >= 2;
 	}
 
@@ -134,27 +123,19 @@ public class BoardManager {
 	 *         last 50 moves, false otherwise
 	 */
 	public boolean checkFiftyMoveRule() {
-
-		// for this purpose a "move" consists of a player completing his turn
-		// followed by his opponent completing his turn
 		if (this.board.getMoveHistory().size() < 100) {
 			return false;
 		}
-
 		for (int i = this.board.getMoveHistory().size() - 1; i >= this.board.getMoveHistory().size() - 100; i--) {
 			Move currentMove = this.board.getMoveHistory().get(i);
 			if (currentMove.getType() != MoveType.ATTACK || currentMove.getMovedPiece().getClass() == Pawn.class) {
 				return false;
 			}
 		}
-
 		return true;
 	}
 
-	// PRIVATE
-
 	private void initBoard() {
-
 		this.board.setPieceAt(new Rook(Color.BLACK), new Coordinate(0, 7));
 		this.board.setPieceAt(new Knight(Color.BLACK), new Coordinate(1, 7));
 		this.board.setPieceAt(new Bishop(Color.BLACK), new Coordinate(2, 7));
@@ -163,11 +144,9 @@ public class BoardManager {
 		this.board.setPieceAt(new Bishop(Color.BLACK), new Coordinate(5, 7));
 		this.board.setPieceAt(new Knight(Color.BLACK), new Coordinate(6, 7));
 		this.board.setPieceAt(new Rook(Color.BLACK), new Coordinate(7, 7));
-
 		for (int x = 0; x < Board.SIZE; x++) {
 			this.board.setPieceAt(new Pawn(Color.BLACK), new Coordinate(x, 6));
 		}
-
 		this.board.setPieceAt(new Rook(Color.WHITE), new Coordinate(0, 0));
 		this.board.setPieceAt(new Knight(Color.WHITE), new Coordinate(1, 0));
 		this.board.setPieceAt(new Bishop(Color.WHITE), new Coordinate(2, 0));
@@ -176,22 +155,18 @@ public class BoardManager {
 		this.board.setPieceAt(new Bishop(Color.WHITE), new Coordinate(5, 0));
 		this.board.setPieceAt(new Knight(Color.WHITE), new Coordinate(6, 0));
 		this.board.setPieceAt(new Rook(Color.WHITE), new Coordinate(7, 0));
-
 		for (int x = 0; x < Board.SIZE; x++) {
 			this.board.setPieceAt(new Pawn(Color.WHITE), new Coordinate(x, 1));
 		}
 	}
 
 	private void addMove(Move move) {
-
 		addRegularMove(move);
-
 		if (move.getType() == MoveType.CASTLING) {
 			addCastling(move);
 		} else if (move.getType() == MoveType.EN_PASSANT) {
 			addEnPassant(move);
 		}
-
 		this.board.getMoveHistory().add(move);
 	}
 
@@ -199,7 +174,6 @@ public class BoardManager {
 		Piece movedPiece = this.board.getPieceAt(move.getFrom());
 		this.board.setPieceAt(null, move.getFrom());
 		this.board.setPieceAt(movedPiece, move.getTo());
-
 		performPromotion(move, movedPiece);
 	}
 
@@ -229,80 +203,81 @@ public class BoardManager {
 		this.board.setPieceAt(null, lastMove.getTo());
 	}
 
-	
-	
-	
-	
-	
-	//TODO Obczaic w fazie testowania jak dzialaja exceptiony tutaj
 	private Move validateMove(Coordinate from, Coordinate to) throws InvalidMoveException, KingInCheckException {
-		initialValidation(from, to);	
-		MoveType moveType = board.getPieceAt(from).checkIfMoveIsValid(board, from, to);
-		isKingInCheckAfterMove(from, to);
+		initialValidation(from, to);
+		MoveType moveType = board.getPieceAt(from).checkIfMoveIsValidForPiece(board, from, to);
+		validateKingAfterMove(from, to);
 		return new Move(from, to, moveType, board.getPieceAt(from));
 	}
 
-	private void isKingInCheckAfterMove(Coordinate from, Coordinate to) throws KingInCheckException, InvalidMoveException {
-		Board boardAfterMove = createTemproraryBoard(board, from, to);
-		new ValidateKing(boardAfterMove).validateIfKingIsInCheck(board.getPieceAt(from).getColor());
-	}
-
-	private Board createTemproraryBoard(Board board, Coordinate from, Coordinate to) {
-		Board tempBoard =board.clone();
-		tempBoard.setPieceAt(tempBoard.getPieceAt(from), to);
-		tempBoard.setPieceAt(null, from);
-		return tempBoard;
-	}
-	
-	private void initialValidation(Coordinate from, Coordinate to) throws InvalidMoveException{
-		//TODO dodac froom!=to!!!
+	private void initialValidation(Coordinate from, Coordinate to) throws InvalidMoveException {
 		validateIfCoordinateIsOutOfBoard(from);
 		validateIfCoordinateIsOutOfBoard(to);
 		validateIfPieceIsNotNull(from);
 		validateTurn(from);
+		validateIfFromEqualsTo(from, to);
+	}
+
+	private void validateIfFromEqualsTo(Coordinate from, Coordinate to) throws InvalidMoveException {
+		if (from.equals(to)) {
+			throw new InvalidMoveException("You cant move to the same place!");
+		}
 	}
 
 	private void validateTurn(Coordinate from) throws InvalidMoveException {
-		if(board.getPieceAt(from).getColor()!=calculateNextMoveColor()){
+		if (board.getPieceAt(from).getColor() != calculateNextMoveColor()) {
 			throw new InvalidMoveException("Its not your turn");
 		}
 	}
 
 	private void validateIfPieceIsNotNull(Coordinate from) throws InvalidMoveException {
-		if(board.getPieceAt(from)==null){
+		if (board.getPieceAt(from) == null) {
 			throw new InvalidMoveException("You cant move without pawn");
 		}
 	}
 
 	private void validateIfCoordinateIsOutOfBoard(Coordinate coordinate) throws InvalidMoveException {
-		if(coordinate.getX()<0 || coordinate.getX()>=Board.SIZE || coordinate.getY()<0 || coordinate.getY()>=Board.SIZE){
+		if (coordinate.getX() < 0 || coordinate.getX() >= Board.SIZE || coordinate.getY() < 0
+				|| coordinate.getY() >= Board.SIZE) {
 			throw new InvalidMoveException("Your coordinate is out of board!");
 		}
 	}
-//TODO tautaj moze byc problem 
+
+	private void validateKingAfterMove(Coordinate from, Coordinate to)
+			throws KingInCheckException, InvalidMoveException {
+		Board boardAfterMove = createTemproraryBoard(board, from, to);
+		new KingInCheckValidator(boardAfterMove).validateIfKingIsInCheck(board.getPieceAt(from).getColor());
+	}
+
+	private Board createTemproraryBoard(Board board, Coordinate from, Coordinate to) {
+		Board temproraryBoard = board.clone();
+		temproraryBoard.setPieceAt(temproraryBoard.getPieceAt(from), to);
+		temproraryBoard.setPieceAt(null, from);
+		return temproraryBoard;
+	}
+
 	private boolean isKingInCheck(Color kingColor) {
 		boolean isKingInCheck;
-		try{
-		new ValidateKing(board).validateIfKingIsInCheck(kingColor);
-		isKingInCheck=false;
-		} catch (KingInCheckException e){
-			isKingInCheck=true;
-		}catch (InvalidMoveException e) {
-			isKingInCheck=false;
+		try {
+			new KingInCheckValidator(board).validateIfKingIsInCheck(kingColor);
+			isKingInCheck = false;
+		} catch (KingInCheckException e) {
+			isKingInCheck = true;
+		} catch (InvalidMoveException e) {
+			isKingInCheck = false;
 		}
-		
 		return isKingInCheck;
 	}
 
 	private boolean isAnyMoveValid(Color nextMoveColor) {
-		List<Coordinate> yourPiecesCoords = new PieceFinder(board).findYourPieces(nextMoveColor);
-		for(Coordinate iteratorCoord : yourPiecesCoords){
-			for(int iteratorRow=0; iteratorRow<Board.SIZE; iteratorRow++){
-				for(int iteratorColumn=0; iteratorColumn<Board.SIZE; iteratorColumn++){
-					try{
-						validateMove(iteratorCoord, new Coordinate(iteratorRow, iteratorColumn));
+		List<Coordinate> actualColorPiecesCoordinates = new PieceFinder(board).findPieces(nextMoveColor);
+		for (Coordinate iteratorCoordinate : actualColorPiecesCoordinates) {
+			for (int iteratorRow = 0; iteratorRow < Board.SIZE; iteratorRow++) {
+				for (int iteratorColumn = 0; iteratorColumn < Board.SIZE; iteratorColumn++) {
+					try {
+						validateMove(iteratorCoordinate, new Coordinate(iteratorRow, iteratorColumn));
 						return true;
-					} catch(InvalidMoveException e){
+					} catch (InvalidMoveException e) {
 					}
 				}
 			}
@@ -310,14 +285,6 @@ public class BoardManager {
 		return false;
 	}
 
-	
-	
-	
-	
-	
-	
-	
-	
 	private Color calculateNextMoveColor() {
 		if (this.board.getMoveHistory().size() % 2 == 0) {
 			return Color.WHITE;
@@ -329,15 +296,12 @@ public class BoardManager {
 	private int findLastNonAttackMoveIndex() {
 		int counter = 0;
 		int lastNonAttackMoveIndex = 0;
-
 		for (Move move : this.board.getMoveHistory()) {
 			if (move.getType() != MoveType.ATTACK) {
 				lastNonAttackMoveIndex = counter;
 			}
 			counter++;
 		}
-
 		return lastNonAttackMoveIndex;
 	}
-
 }

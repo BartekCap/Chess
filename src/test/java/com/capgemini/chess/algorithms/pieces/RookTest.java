@@ -22,7 +22,7 @@ public class RookTest {
 		board.setPieceAt(rook, from);
 		board.setPieceAt(new Pawn(Color.BLACK),to );
 		//when
-		MoveType moveType = rook.checkIfMoveIsValid(board,from , to);
+		MoveType moveType = rook.checkIfMoveIsValidForPiece(board,from , to);
 		//then
 		assertEquals(MoveType.CAPTURE, moveType);
 	}
@@ -36,7 +36,7 @@ public class RookTest {
 		Coordinate to = new Coordinate(7, 5);
 		board.setPieceAt(rook, from);
 		//when
-		MoveType moveType = rook.checkIfMoveIsValid(board,from , to);
+		MoveType moveType = rook.checkIfMoveIsValidForPiece(board,from , to);
 		//then
 		assertEquals(MoveType.ATTACK, moveType);
 	}
@@ -55,7 +55,7 @@ public class RookTest {
 		String message = "";
 		//when
 		try{
-		rook.checkIfMoveIsValid(board,from , to);
+		rook.checkIfMoveIsValidForPiece(board,from , to);
 		isException=false;
 		} catch (InvalidMoveException e){
 			isException = true;
@@ -80,7 +80,7 @@ public class RookTest {
 		String message = "";
 		//when
 		try{
-		rook.checkIfMoveIsValid(board,from , to);
+		rook.checkIfMoveIsValidForPiece(board,from , to);
 		isException=false;
 		} catch (InvalidMoveException e){
 			isException = true;

@@ -10,21 +10,17 @@ public abstract class Piece {
 
 	protected Color color;
 
-	public Piece() {
-	}
-
 	public Piece(Color color) {
 		this.color = color;
 	}
 
-	public abstract MoveType checkIfMoveIsValid(Board board, Coordinate from, Coordinate to)
+	public abstract MoveType checkIfMoveIsValidForPiece(Board board, Coordinate from, Coordinate to)
 			throws InvalidMoveException;
 
-	protected void validateMoveRuleAndClearPath(int iteratorRestriction, Board board, Coordinate from, Coordinate to)
+	protected void validateMoveRuleAndClearPathForBishopRookAndQueen(int iteratorRestriction, Board board, Coordinate from, Coordinate to)
 			throws InvalidMoveException {
 		int deltaX = from.getX() - to.getX();
 		int deltaY = from.getY() - to.getY();
-
 		if (isDirectionN(deltaX, deltaY)) {
 			validateIfSquaresAreNotNull(-1, 0, iteratorRestriction, board, from, to);
 		} else if (isDirectionNE(deltaX, deltaY)) {
@@ -56,7 +52,6 @@ public abstract class Piece {
 		} else {
 			throw new InvalidMoveException("You cant capture your piece!");
 		}
-
 	}
 
 	protected void validateIfSquaresAreNotNull(int signX, int signY, int iteratorRestriction, Board board,
@@ -101,6 +96,14 @@ public abstract class Piece {
 		return deltaX > 0 && deltaY > 0 && Math.abs(deltaX) == Math.abs(deltaY);
 	}
 
+	public Color getColor() {
+		return color;
+	}
+
+	public void setColor(Color color) {
+		this.color = color;
+	}
+	
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -108,7 +111,7 @@ public abstract class Piece {
 		result = prime * result + ((color == null) ? 0 : color.hashCode());
 		return result;
 	}
-
+	
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -121,13 +124,5 @@ public abstract class Piece {
 		if (color != other.color)
 			return false;
 		return true;
-	}
-
-	public Color getColor() {
-		return color;
-	}
-
-	public void setColor(Color color) {
-		this.color = color;
 	}
 }

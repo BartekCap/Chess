@@ -13,10 +13,10 @@ public class Bishop extends Piece {
 	}
 	
 	@Override
-	public MoveType checkIfMoveIsValid(Board board, Coordinate from, Coordinate to) throws InvalidMoveException {
+	public MoveType checkIfMoveIsValidForPiece(Board board, Coordinate from, Coordinate to) throws InvalidMoveException {
 		validateThatPieceCanMoveThatDirection(from, to);
 		int iterationRestriction = Math.abs(from.getX()-to.getX());
-		validateMoveRuleAndClearPath(iterationRestriction, board, from, to);
+		validateMoveRuleAndClearPathForBishopRookAndQueen(iterationRestriction, board, from, to);
 		return getMoveType(board, from, to);
 	}
 
@@ -28,7 +28,4 @@ public class Bishop extends Piece {
 			throw new InvalidMoveException("Bishop cant move there. It is against rules for this piece");
 		}
 	}
-
-
-	
 }

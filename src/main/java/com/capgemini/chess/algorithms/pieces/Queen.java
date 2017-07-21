@@ -8,8 +8,12 @@ import com.capgemini.chess.algorithms.implementation.exceptions.InvalidMoveExcep
 
 public class Queen extends Piece {
 
+	public Queen(Color color) {
+		super(color);
+	}
+	
 	@Override
-	public MoveType checkIfMoveIsValid(Board board, Coordinate from, Coordinate to) throws InvalidMoveException {
+	public MoveType checkIfMoveIsValidForPiece(Board board, Coordinate from, Coordinate to) throws InvalidMoveException {
 		validateThatPieceCanMoveThatDirection(from, to);
 		int iterationRestriction;
 		if (from.getX() - to.getX() != 0) {
@@ -17,7 +21,7 @@ public class Queen extends Piece {
 		} else {
 			iterationRestriction = Math.abs(from.getY() - to.getY());
 		}
-		validateMoveRuleAndClearPath(iterationRestriction, board, from, to);
+		validateMoveRuleAndClearPathForBishopRookAndQueen(iterationRestriction, board, from, to);
 		return getMoveType(board, from, to);
 	}
 
@@ -29,8 +33,5 @@ public class Queen extends Piece {
 				|| isDirectionNE(deltaX, deltaY) || isDirectionSE(deltaX, deltaY) || isDirectionSW(deltaX, deltaY) || isDirectionNW(deltaX, deltaY))) {
 			throw new InvalidMoveException("Queen cant move there. It is against rules for this piece");
 		}
-	}
-	public Queen(Color color) {
-		super(color);
 	}
 }

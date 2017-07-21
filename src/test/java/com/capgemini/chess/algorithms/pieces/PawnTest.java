@@ -23,7 +23,7 @@ public class PawnTest {
 		board.setPieceAt(pawn, from);
 		board.setPieceAt(new Pawn(Color.BLACK),to );
 		//when
-		MoveType moveType = pawn.checkIfMoveIsValid(board,from , to);
+		MoveType moveType = pawn.checkIfMoveIsValidForPiece(board,from , to);
 		//then
 		assertEquals(MoveType.CAPTURE, moveType);
 	}
@@ -37,7 +37,7 @@ public class PawnTest {
 		Coordinate to = new Coordinate(4, 5);
 		board.setPieceAt(pawn, from);
 		//when
-		MoveType moveType = pawn.checkIfMoveIsValid(board,from , to);
+		MoveType moveType = pawn.checkIfMoveIsValidForPiece(board,from , to);
 		//then
 		assertEquals(MoveType.ATTACK, moveType);
 	}
@@ -54,7 +54,7 @@ public class PawnTest {
 		Piece capturingPiece = new Pawn(Color.BLACK);
 		board.setPieceAt(capturingPiece, new Coordinate(5, 3));
 		//when
-		MoveType moveType = capturingPiece.checkIfMoveIsValid(board, new Coordinate(5, 3) , new Coordinate(6, 2));
+		MoveType moveType = capturingPiece.checkIfMoveIsValidForPiece(board, new Coordinate(5, 3) , new Coordinate(6, 2));
 		//then
 		assertEquals(MoveType.EN_PASSANT, moveType);
 	}
@@ -68,7 +68,7 @@ public class PawnTest {
 		Coordinate to = new Coordinate(7, 3);
 		board.setPieceAt(pawn, from);
 		//when
-		MoveType moveType = pawn.checkIfMoveIsValid(board,from , to);
+		MoveType moveType = pawn.checkIfMoveIsValidForPiece(board,from , to);
 		//then
 		assertEquals(MoveType.ATTACK, moveType);
 	}
@@ -84,7 +84,7 @@ public class PawnTest {
 		boolean isException;
 		//when
 		try{
-		pawn.checkIfMoveIsValid(board,from , to);
+		pawn.checkIfMoveIsValidForPiece(board,from , to);
 		isException=false;
 		} catch (InvalidMoveException e){
 			isException = true;
@@ -105,7 +105,7 @@ public class PawnTest {
 		boolean isException;
 		//when
 		try{
-		pawn.checkIfMoveIsValid(board,from , to);
+		pawn.checkIfMoveIsValidForPiece(board,from , to);
 		isException=false;
 		} catch (InvalidMoveException e){
 			isException = true;
@@ -125,7 +125,7 @@ public class PawnTest {
 		boolean isException;
 		//when
 		try{
-		pawn.checkIfMoveIsValid(board, from, to);
+		pawn.checkIfMoveIsValidForPiece(board, from, to);
 		isException=false;
 		} catch (InvalidMoveException e){
 			isException = true;
@@ -145,7 +145,7 @@ public class PawnTest {
 		boolean isException;
 		//when
 		try{
-		pawn.checkIfMoveIsValid(board, from, to);
+		pawn.checkIfMoveIsValidForPiece(board, from, to);
 		isException=false;
 		} catch (InvalidMoveException e){
 			isException = true;

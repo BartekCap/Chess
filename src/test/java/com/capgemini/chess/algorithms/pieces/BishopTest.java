@@ -22,7 +22,7 @@ public class BishopTest {
 		board.setPieceAt(bishop, from);
 		board.setPieceAt(new Pawn(Color.BLACK),to );
 		//when
-		MoveType moveType = bishop.checkIfMoveIsValid(board,from , to);
+		MoveType moveType = bishop.checkIfMoveIsValidForPiece(board,from , to);
 		//then
 		assertEquals(MoveType.CAPTURE, moveType);
 	}
@@ -36,7 +36,7 @@ public class BishopTest {
 		Coordinate to = new Coordinate(1, 6);
 		board.setPieceAt(bishop, from);
 		//when
-		MoveType moveType = bishop.checkIfMoveIsValid(board,from , to);
+		MoveType moveType = bishop.checkIfMoveIsValidForPiece(board,from , to);
 		//then
 		assertEquals(MoveType.ATTACK, moveType);
 	}
@@ -55,7 +55,7 @@ public class BishopTest {
 		String message = "";
 		//when
 		try{
-		bishop.checkIfMoveIsValid(board,from , to);
+		bishop.checkIfMoveIsValidForPiece(board,from , to);
 		isException=false;
 		} catch (InvalidMoveException e){
 			isException = true;

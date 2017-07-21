@@ -13,7 +13,7 @@ import com.capgemini.chess.algorithms.pieces.King;
 import com.capgemini.chess.algorithms.pieces.Pawn;
 import com.capgemini.chess.algorithms.pieces.Rook;
 
-public class ValidateKingTest {
+public class KingInCheckValidatorTest {
 
 	@Test
 	public void shouldThrowInvalidMoveExceptionWhenKingIsInCheck() {
@@ -23,7 +23,7 @@ public class ValidateKingTest {
 		board.setPieceAt(new Pawn(Color.WHITE), new Coordinate(1, 6));
 		board.setPieceAt(new Bishop(Color.WHITE), new Coordinate(2, 5));
 		boolean exceptionThrown=false;
-		ValidateKing checkKing = new ValidateKing(board);
+		KingInCheckValidator checkKing = new KingInCheckValidator(board);
 		//when
 		try{
 			checkKing.validateIfKingIsInCheck(Color.BLACK);
@@ -42,7 +42,7 @@ public class ValidateKingTest {
 		board.setPieceAt(new Pawn(Color.BLACK), new Coordinate(1, 6));
 		board.setPieceAt(new Bishop(Color.WHITE), new Coordinate(2, 5));
 		boolean exceptionThrown=false;
-		ValidateKing checkKing = new ValidateKing(board);
+		KingInCheckValidator checkKing = new KingInCheckValidator(board);
 		//when
 		try{
 			checkKing.validateIfKingIsInCheck(Color.BLACK);
@@ -62,7 +62,7 @@ public class ValidateKingTest {
 		board.setPieceAt(new Rook(Color.WHITE), new Coordinate(2, 7));
 		board.setPieceAt(new Bishop(Color.WHITE), new Coordinate(2, 5));
 		boolean exceptionThrown=false;
-		ValidateKing checkKing = new ValidateKing(board);
+		KingInCheckValidator checkKing = new KingInCheckValidator(board);
 		//when
 		try{
 			checkKing.validateIfKingIsInCheck(Color.BLACK);

@@ -23,7 +23,7 @@ public class KingTest {
 		board.setPieceAt(king, from);
 		board.setPieceAt(new Pawn(Color.BLACK),to );
 		//when
-		MoveType moveType = king.checkIfMoveIsValid(board,from , to);
+		MoveType moveType = king.checkIfMoveIsValidForPiece(board,from , to);
 		//then
 		assertEquals(MoveType.CAPTURE, moveType);
 	}
@@ -38,7 +38,7 @@ public class KingTest {
 		board.setPieceAt(king, from);
 		board.setPieceAt(new Pawn(Color.BLACK),new Coordinate(3, 5) );
 		//when
-		MoveType moveType = king.checkIfMoveIsValid(board,from , to);
+		MoveType moveType = king.checkIfMoveIsValidForPiece(board,from , to);
 		//then
 		assertEquals(MoveType.ATTACK, moveType);
 	}
@@ -53,7 +53,7 @@ public class KingTest {
 		board.setPieceAt(king, from);
 		board.setPieceAt(new Rook(Color.WHITE),new Coordinate(0, 0) );
 		//when
-		MoveType moveType = king.checkIfMoveIsValid(board,from , to);
+		MoveType moveType = king.checkIfMoveIsValidForPiece(board,from , to);
 		//then
 		assertEquals(MoveType.CASTLING, moveType);
 	}
@@ -72,7 +72,7 @@ public class KingTest {
 		String message = "";
 		//when
 		try{
-		king.checkIfMoveIsValid(board,from , to);
+		king.checkIfMoveIsValidForPiece(board,from , to);
 		isException=false;
 		} catch (InvalidMoveException e){
 			isException = true;
@@ -95,7 +95,7 @@ public class KingTest {
 		boolean isException;
 		//when
 		try{
-		king.checkIfMoveIsValid(board,from , to);
+		king.checkIfMoveIsValidForPiece(board,from , to);
 		isException=false;
 		} catch (InvalidMoveException e){
 			isException = true;
@@ -118,7 +118,7 @@ public class KingTest {
 		board.getMoveHistory().add(dummyMove);
 		//when
 		try{
-		king.checkIfMoveIsValid(board, from , to);
+		king.checkIfMoveIsValidForPiece(board, from , to);
 		isException=false;
 		} catch (InvalidMoveException e){
 			isException = true;
@@ -142,7 +142,7 @@ public class KingTest {
 		board.getMoveHistory().add(dummyMove);
 		//when
 		try{
-		king.checkIfMoveIsValid(board, from , to);
+		king.checkIfMoveIsValidForPiece(board, from , to);
 		isException=false;
 		} catch (InvalidMoveException e){
 			isException = true;
@@ -164,7 +164,7 @@ public class KingTest {
 		boolean isException;
 		//when
 		try{
-		king.checkIfMoveIsValid(board, from , to);
+		king.checkIfMoveIsValidForPiece(board, from , to);
 		isException=false;
 		} catch (InvalidMoveException e){
 			isException = true;

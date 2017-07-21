@@ -22,7 +22,7 @@ public class KnightTest {
 		board.setPieceAt(knight, from);
 		board.setPieceAt(new Pawn(Color.BLACK),to );
 		//when
-		MoveType moveType = knight.checkIfMoveIsValid(board,from , to);
+		MoveType moveType = knight.checkIfMoveIsValidForPiece(board,from , to);
 		//then
 		assertEquals(MoveType.CAPTURE, moveType);
 	}
@@ -38,7 +38,7 @@ public class KnightTest {
 		boolean isException;
 		//when
 		try{
-		knight.checkIfMoveIsValid(board,from , to);
+		knight.checkIfMoveIsValidForPiece(board,from , to);
 		isException=false;
 		} catch (InvalidMoveException e){
 			isException = true;
@@ -59,7 +59,7 @@ public class KnightTest {
 		boolean isException;
 		//when
 		try{
-		knight.checkIfMoveIsValid(board,from , to);
+		knight.checkIfMoveIsValidForPiece(board,from , to);
 		isException=false;
 		} catch (InvalidMoveException e){
 			isException = true;

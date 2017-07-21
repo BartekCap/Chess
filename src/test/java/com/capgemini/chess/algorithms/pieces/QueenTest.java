@@ -22,7 +22,7 @@ public class QueenTest {
 		board.setPieceAt(queen, from);
 		board.setPieceAt(new Pawn(Color.BLACK),to );
 		//when
-		MoveType moveType = queen.checkIfMoveIsValid(board,from , to);
+		MoveType moveType = queen.checkIfMoveIsValidForPiece(board,from , to);
 		//then
 		assertEquals(MoveType.CAPTURE, moveType);
 	}
@@ -41,7 +41,7 @@ public class QueenTest {
 		String message = "";
 		//when
 		try{
-		queen.checkIfMoveIsValid(board,from , to);
+		queen.checkIfMoveIsValidForPiece(board,from , to);
 		isException=false;
 		} catch (InvalidMoveException e){
 			isException = true;

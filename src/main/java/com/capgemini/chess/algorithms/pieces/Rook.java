@@ -8,8 +8,13 @@ import com.capgemini.chess.algorithms.implementation.exceptions.InvalidMoveExcep
 
 public class Rook extends Piece {
 
+	public Rook(Color color) {
+		super(color);
+	}
+
 	@Override
-	public MoveType checkIfMoveIsValid(Board board, Coordinate from, Coordinate to) throws InvalidMoveException {
+	public MoveType checkIfMoveIsValidForPiece(Board board, Coordinate from, Coordinate to)
+			throws InvalidMoveException {
 		validateThatPieceCanMoveThatDirection(from, to);
 		int iterationRestriction;
 		if (from.getX() - to.getX() != 0) {
@@ -17,7 +22,7 @@ public class Rook extends Piece {
 		} else {
 			iterationRestriction = Math.abs(from.getY() - to.getY());
 		}
-		validateMoveRuleAndClearPath(iterationRestriction, board, from, to);
+		validateMoveRuleAndClearPathForBishopRookAndQueen(iterationRestriction, board, from, to);
 		return getMoveType(board, from, to);
 	}
 
@@ -31,7 +36,4 @@ public class Rook extends Piece {
 		}
 	}
 
-	public Rook(Color color) {
-		super(color);
-	}
 }

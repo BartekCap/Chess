@@ -11,8 +11,14 @@ public class Pawn extends Piece {
 	int deltaX;
 	int deltaY;
 
+	public Pawn(Color color) {
+		super(color);
+	}
+
+	// DO REFACTORINGU
 	@Override
-	public MoveType checkIfMoveIsValid(Board board, Coordinate from, Coordinate to) throws InvalidMoveException {
+	public MoveType checkIfMoveIsValidForPiece(Board board, Coordinate from, Coordinate to)
+			throws InvalidMoveException {
 		initialPawnValidation(from, to);
 		if (isEnPassant(board, from, to)) {
 			return MoveType.EN_PASSANT;
@@ -33,7 +39,6 @@ public class Pawn extends Piece {
 		} else {
 			throw new InvalidMoveException();
 		}
-
 	}
 
 	private void initialPawnValidation(Coordinate from, Coordinate to) throws InvalidMoveException {
@@ -56,13 +61,13 @@ public class Pawn extends Piece {
 	private void validateDoubleMove(Board board, Coordinate from, Coordinate to) throws InvalidMoveException {
 		int avarageX = (from.getX() + to.getX()) / 2;
 		int avarageY = (from.getY() + to.getY()) / 2;
-		//TODO do zrobienia
-		if (board.getPieceAt(new Coordinate(avarageX, avarageY)) != null ||  !(from.getY()==1 || from.getY()==6))
+		// TODO do zrobienia
+		if (board.getPieceAt(new Coordinate(avarageX, avarageY)) != null || !(from.getY() == 1 || from.getY() == 6))
 			throw new InvalidMoveException("Between your piece and destination is another piece!");
 	}
 
 	private boolean isEnPassant(Board board, Coordinate from, Coordinate to) {
-		if(board.getMoveHistory().size()<1){
+		if (board.getMoveHistory().size() < 1) {
 			return false;
 		}
 		if (checkIfIsPosibleMove(board, from, to)) {
@@ -72,9 +77,9 @@ public class Pawn extends Piece {
 	}
 
 	private boolean checkLastMoveThatIsDoubleMoveAndIsPawn(Board board) {
-		Move lastMove = board.getMoveHistory().get(board.getMoveHistory().size()-1);
-		int lastMoveDeltaY = lastMove.getFrom().getY()-lastMove.getTo().getY();
-		if(lastMove.getMovedPiece().equals(new Pawn(getOppositColor())) && Math.abs(lastMoveDeltaY)==2){
+		Move lastMove = board.getMoveHistory().get(board.getMoveHistory().size() - 1);
+		int lastMoveDeltaY = lastMove.getFrom().getY() - lastMove.getTo().getY();
+		if (lastMove.getMovedPiece().equals(new Pawn(getOppositColor())) && Math.abs(lastMoveDeltaY) == 2) {
 			return true;
 		}
 		return false;
@@ -94,10 +99,6 @@ public class Pawn extends Piece {
 		} else {
 			return false;
 		}
-	}
-
-	public Pawn(Color color) {
-		super(color);
 	}
 
 	@Override
