@@ -5,8 +5,10 @@ import com.capgemini.chess.algorithms.data.enums.Color;
 import com.capgemini.chess.algorithms.data.enums.MoveType;
 import com.capgemini.chess.algorithms.data.generated.Board;
 import com.capgemini.chess.algorithms.implementation.exceptions.InvalidMoveException;
+import com.capgemini.chess.algorithms.pieces.abstracts.MultiMoveable;
+import com.capgemini.chess.algorithms.pieces.abstracts.Piece;
 
-public class Bishop extends Piece {
+public class Bishop extends Piece implements MultiMoveable {
 
 	public Bishop(Color color) {
 		super(color);

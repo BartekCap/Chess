@@ -1,7 +1,7 @@
 package com.capgemini.chess.algorithms.data;
 
 import com.capgemini.chess.algorithms.data.enums.MoveType;
-import com.capgemini.chess.algorithms.pieces.Piece;
+import com.capgemini.chess.algorithms.pieces.abstracts.Piece;
 
 public class Move {
 

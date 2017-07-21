@@ -7,7 +7,7 @@ import com.capgemini.chess.algorithms.data.Coordinate;
 import com.capgemini.chess.algorithms.data.Move;
 import com.capgemini.chess.algorithms.data.enums.BoardState;
 import com.capgemini.chess.algorithms.data.enums.Color;
-import com.capgemini.chess.algorithms.pieces.Piece;
+import com.capgemini.chess.algorithms.pieces.abstracts.Piece;
 
 public class Board implements Cloneable {
 

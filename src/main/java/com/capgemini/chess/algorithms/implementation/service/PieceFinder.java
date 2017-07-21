@@ -7,7 +7,7 @@ import com.capgemini.chess.algorithms.data.Coordinate;
 import com.capgemini.chess.algorithms.data.enums.Color;
 import com.capgemini.chess.algorithms.data.generated.Board;
 import com.capgemini.chess.algorithms.pieces.King;
-import com.capgemini.chess.algorithms.pieces.Piece;
+import com.capgemini.chess.algorithms.pieces.abstracts.Piece;
 
 public class PieceFinder {
 	Board board;

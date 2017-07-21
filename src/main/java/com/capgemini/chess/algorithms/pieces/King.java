@@ -10,8 +10,10 @@ import com.capgemini.chess.algorithms.data.enums.MoveType;
 import com.capgemini.chess.algorithms.data.generated.Board;
 import com.capgemini.chess.algorithms.implementation.exceptions.InvalidMoveException;
 import com.capgemini.chess.algorithms.implementation.service.KingInCheckValidator;
+import com.capgemini.chess.algorithms.pieces.abstracts.MultiMoveable;
+import com.capgemini.chess.algorithms.pieces.abstracts.Piece;
 
-public class King extends Piece {
+public class King extends Piece implements MultiMoveable {
 
 	private static final int CASTLING_ITERATOR_N = 4;
 	private static final int CASTLING_ITERATOR_S = 3;

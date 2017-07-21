@@ -15,6 +15,7 @@ import com.capgemini.chess.algorithms.implementation.service.MoveValidator;
 import com.capgemini.chess.algorithms.implementation.service.KingInCheckValidator;
 import com.capgemini.chess.algorithms.implementation.service.PieceFinder;
 import com.capgemini.chess.algorithms.pieces.*;
+import com.capgemini.chess.algorithms.pieces.abstracts.Piece;
 
 public class BoardManager {
 
