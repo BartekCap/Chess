@@ -35,5 +35,4 @@ public class Rook extends Piece {
 			throw new InvalidMoveException("Rook cant move there. It is against rules for this piece");
 		}
 	}
-
 }

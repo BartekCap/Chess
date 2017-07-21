@@ -11,14 +11,11 @@ import com.capgemini.chess.algorithms.data.enums.MoveType;
 import com.capgemini.chess.algorithms.data.generated.Board;
 import com.capgemini.chess.algorithms.implementation.exceptions.InvalidMoveException;
 import com.capgemini.chess.algorithms.implementation.exceptions.KingInCheckException;
+import com.capgemini.chess.algorithms.implementation.service.MoveValidator;
+import com.capgemini.chess.algorithms.implementation.service.KingInCheckValidator;
+import com.capgemini.chess.algorithms.implementation.service.PieceFinder;
 import com.capgemini.chess.algorithms.pieces.*;
 
-/**
- * Class for managing of basic operations on the Chess Board.
- *
- * @author Michal Bejm
- *
- */
 public class BoardManager {
 
 	private Board board = new Board();
@@ -38,40 +35,18 @@ public class BoardManager {
 		this.board = board;
 	}
 
-	/**
-	 * Getter for generated board
-	 *
-	 * @return board
-	 */
 	public Board getBoard() {
 		return this.board;
 	}
 
-	/**
-	 * Performs move of the chess piece on the chess board from one field to
-	 * another.
-	 *
-	 * @param from
-	 *            coordinates of 'from' field
-	 * @param to
-	 *            coordinates of 'to' field
-	 * @return move object which includes moved piece and move type
-	 * @throws InvalidMoveException
-	 *             in case move is not valid
-	 */
 	public Move performMove(Coordinate from, Coordinate to) throws InvalidMoveException {
 		Move move = validateMove(from, to);
 		addMove(move);
 		return move;
 	}
 
-	/**
-	 * Calculates state of the chess board.
-	 *
-	 * @return state of the chess board
-	 */
 	public BoardState updateBoardState() {
-		Color nextMoveColor = calculateNextMoveColor();
+		Color nextMoveColor = board.calculateNextMoveColor();
 		boolean isKingInCheck = isKingInCheck(nextMoveColor);
 		boolean isAnyMoveValid = isAnyMoveValid(nextMoveColor);
 		BoardState boardState;
@@ -92,12 +67,6 @@ public class BoardManager {
 		return boardState;
 	}
 
-	/**
-	 * Checks threefold repetition rule (one of the conditions to end the chess
-	 * game with a draw).
-	 *
-	 * @return true if current state repeated at list two times, false otherwise
-	 */
 	public boolean checkThreefoldRepetitionRule() {
 		int lastNonAttackMoveIndex = findLastNonAttackMoveIndex();
 		List<Move> omittedMoves = this.board.getMoveHistory().subList(0, lastNonAttackMoveIndex);
@@ -115,13 +84,6 @@ public class BoardManager {
 		return counter >= 2;
 	}
 
-	/**
-	 * Checks 50-move rule (one of the conditions to end the chess game with a
-	 * draw).
-	 *
-	 * @return true if no pawn was moved or not capture was performed during
-	 *         last 50 moves, false otherwise
-	 */
 	public boolean checkFiftyMoveRule() {
 		if (this.board.getMoveHistory().size() < 100) {
 			return false;
@@ -204,56 +166,8 @@ public class BoardManager {
 	}
 
 	private Move validateMove(Coordinate from, Coordinate to) throws InvalidMoveException, KingInCheckException {
-		initialValidation(from, to);
-		MoveType moveType = board.getPieceAt(from).checkIfMoveIsValidForPiece(board, from, to);
-		validateKingAfterMove(from, to);
-		return new Move(from, to, moveType, board.getPieceAt(from));
-	}
-
-	private void initialValidation(Coordinate from, Coordinate to) throws InvalidMoveException {
-		validateIfCoordinateIsOutOfBoard(from);
-		validateIfCoordinateIsOutOfBoard(to);
-		validateIfPieceIsNotNull(from);
-		validateTurn(from);
-		validateIfFromEqualsTo(from, to);
-	}
-
-	private void validateIfFromEqualsTo(Coordinate from, Coordinate to) throws InvalidMoveException {
-		if (from.equals(to)) {
-			throw new InvalidMoveException("You cant move to the same place!");
-		}
-	}
-
-	private void validateTurn(Coordinate from) throws InvalidMoveException {
-		if (board.getPieceAt(from).getColor() != calculateNextMoveColor()) {
-			throw new InvalidMoveException("Its not your turn");
-		}
-	}
-
-	private void validateIfPieceIsNotNull(Coordinate from) throws InvalidMoveException {
-		if (board.getPieceAt(from) == null) {
-			throw new InvalidMoveException("You cant move without pawn");
-		}
-	}
-
-	private void validateIfCoordinateIsOutOfBoard(Coordinate coordinate) throws InvalidMoveException {
-		if (coordinate.getX() < 0 || coordinate.getX() >= Board.SIZE || coordinate.getY() < 0
-				|| coordinate.getY() >= Board.SIZE) {
-			throw new InvalidMoveException("Your coordinate is out of board!");
-		}
-	}
-
-	private void validateKingAfterMove(Coordinate from, Coordinate to)
-			throws KingInCheckException, InvalidMoveException {
-		Board boardAfterMove = createTemproraryBoard(board, from, to);
-		new KingInCheckValidator(boardAfterMove).validateIfKingIsInCheck(board.getPieceAt(from).getColor());
-	}
-
-	private Board createTemproraryBoard(Board board, Coordinate from, Coordinate to) {
-		Board temproraryBoard = board.clone();
-		temproraryBoard.setPieceAt(temproraryBoard.getPieceAt(from), to);
-		temproraryBoard.setPieceAt(null, from);
-		return temproraryBoard;
+		Move validatedMove = new MoveValidator(board).validateMove(from, to);
+		return validatedMove;
 	}
 
 	private boolean isKingInCheck(Color kingColor) {
@@ -274,23 +188,14 @@ public class BoardManager {
 		for (Coordinate iteratorCoordinate : actualColorPiecesCoordinates) {
 			for (int iteratorRow = 0; iteratorRow < Board.SIZE; iteratorRow++) {
 				for (int iteratorColumn = 0; iteratorColumn < Board.SIZE; iteratorColumn++) {
-					try {
-						validateMove(iteratorCoordinate, new Coordinate(iteratorRow, iteratorColumn));
+					if (new MoveValidator(board).isMoveValid(iteratorCoordinate,
+							new Coordinate(iteratorRow, iteratorColumn))) {
 						return true;
-					} catch (InvalidMoveException e) {
 					}
 				}
 			}
 		}
 		return false;
-	}
-
-	private Color calculateNextMoveColor() {
-		if (this.board.getMoveHistory().size() % 2 == 0) {
-			return Color.WHITE;
-		} else {
-			return Color.BLACK;
-		}
 	}
 
 	private int findLastNonAttackMoveIndex() {

@@ -1,11 +1,5 @@
 package com.capgemini.chess.algorithms.data;
 
-/**
- * Coordinates of Chess Piece.
- * 
- * @author Michal Bejm
- *
- */
 public class Coordinate {
 
 	private int x;

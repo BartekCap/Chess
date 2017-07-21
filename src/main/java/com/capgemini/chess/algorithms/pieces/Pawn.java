@@ -15,7 +15,6 @@ public class Pawn extends Piece {
 		super(color);
 	}
 
-	// DO REFACTORINGU
 	@Override
 	public MoveType checkIfMoveIsValidForPiece(Board board, Coordinate from, Coordinate to)
 			throws InvalidMoveException {

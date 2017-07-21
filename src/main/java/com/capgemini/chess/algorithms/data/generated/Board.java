@@ -6,14 +6,9 @@ import java.util.List;
 import com.capgemini.chess.algorithms.data.Coordinate;
 import com.capgemini.chess.algorithms.data.Move;
 import com.capgemini.chess.algorithms.data.enums.BoardState;
+import com.capgemini.chess.algorithms.data.enums.Color;
 import com.capgemini.chess.algorithms.pieces.Piece;
 
-/**
- * Board representation. Board objects are generated based on move history.
- * 
- * @author Michal Bejm
- *
- */
 public class Board implements Cloneable {
 
 	public static final int SIZE = 8;
@@ -23,6 +18,14 @@ public class Board implements Cloneable {
 	private BoardState state;
 
 	public Board() {
+	}
+
+	public Color calculateNextMoveColor() {
+		if (this.getMoveHistory().size() % 2 == 0) {
+			return Color.WHITE;
+		} else {
+			return Color.BLACK;
+		}
 	}
 
 	public List<Move> getMoveHistory() {
@@ -41,27 +44,10 @@ public class Board implements Cloneable {
 		this.state = state;
 	}
 
-	/**
-	 * Sets chess piece on board based on given coordinates
-	 * 
-	 * @param piece
-	 *            chess piece
-	 * @param board
-	 *            chess board
-	 * @param coordinate
-	 *            given coordinates
-	 */
 	public void setPieceAt(Piece piece, Coordinate coordinate) {
 		pieces[coordinate.getX()][coordinate.getY()] = piece;
 	}
 
-	/**
-	 * Gets chess piece from board based on given coordinates
-	 * 
-	 * @param coordinate
-	 *            given coordinates
-	 * @return chess piece
-	 */
 	public Piece getPieceAt(Coordinate coordinate) {
 		return pieces[coordinate.getX()][coordinate.getY()];
 	}

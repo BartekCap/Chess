@@ -1,4 +1,4 @@
-package com.capgemini.chess.algorithms.implementation;
+package com.capgemini.chess.algorithms.implementation.service;
 
 import java.util.List;
 import com.capgemini.chess.algorithms.data.Coordinate;
@@ -15,7 +15,8 @@ public class KingInCheckValidator {
 		this.board = board;
 	}
 
-	public void validateKingsWayInCastlingThatCantBeInCapture(Color actualColor, List<Coordinate> coordinates) throws InvalidMoveException {
+	public void validateKingsWayInCastlingThatCantBeInCapture(Color actualColor, List<Coordinate> coordinates)
+			throws InvalidMoveException {
 		List<Coordinate> opponentPiecesCoordinates = new PieceFinder(board).findOpponentPieces(actualColor);
 		for (Coordinate coordinate : coordinates) {
 			for (Coordinate coord : opponentPiecesCoordinates) {
@@ -27,22 +28,36 @@ public class KingInCheckValidator {
 			}
 		}
 	}
-	
+
 	public void validateIfKingIsInCheck(Color actualPieceColor) throws InvalidMoveException, KingInCheckException {
-		PieceFinder pieceFinder =  new PieceFinder(board);
+		PieceFinder pieceFinder = new PieceFinder(board);
 		List<Coordinate> opponentPiecesCoordinates = pieceFinder.findOpponentPieces(actualPieceColor);
 		Coordinate kingsCoordinate = pieceFinder.findKing(actualPieceColor);
 		boolean kingInCheck;
 		for (Coordinate coord : opponentPiecesCoordinates) {
 			try {
 				board.getPieceAt(coord).checkIfMoveIsValidForPiece(board, coord, kingsCoordinate);
-				kingInCheck=true;
+				kingInCheck = true;
 			} catch (InvalidMoveException ex) {
-				kingInCheck=false;
+				kingInCheck = false;
 			}
-			if(kingInCheck){
+			if (kingInCheck) {
 				throw new KingInCheckException();
+
 			}
 		}
+	}
+
+	public void validateKingAfterMove(Coordinate from, Coordinate to)
+			throws KingInCheckException, InvalidMoveException {
+		Board boardAfterMove = createTemproraryBoard(board, from, to);
+		new KingInCheckValidator(boardAfterMove).validateIfKingIsInCheck(board.getPieceAt(from).getColor());
+	}
+
+	private Board createTemproraryBoard(Board board, Coordinate from, Coordinate to) {
+		Board temproraryBoard = board.clone();
+		temproraryBoard.setPieceAt(temproraryBoard.getPieceAt(from), to);
+		temproraryBoard.setPieceAt(null, from);
+		return temproraryBoard;
 	}
 }

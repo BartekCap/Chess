@@ -1,4 +1,4 @@
-package com.capgemini.chess.algorithms.implementation;
+package com.capgemini.chess.algorithms.implementation.service;
 
 import java.util.ArrayList;
 import java.util.List;

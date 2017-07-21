@@ -2,12 +2,6 @@ package com.capgemini.chess.algorithms.data;
 
 import com.capgemini.chess.algorithms.data.enums.Level;
 
-/**
- * Information on player's stats.
- * 
- * @author Michal Bejm
- *
- */
 public class Player {
 
 	private Level level;

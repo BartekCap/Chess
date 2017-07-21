@@ -34,5 +34,4 @@ public class Knight extends Piece {
 			throw new InvalidMoveException("Knight cant move that way!");
 		}
 	}
-
 }

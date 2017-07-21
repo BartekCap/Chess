@@ -8,8 +8,8 @@ import com.capgemini.chess.algorithms.data.Move;
 import com.capgemini.chess.algorithms.data.enums.Color;
 import com.capgemini.chess.algorithms.data.enums.MoveType;
 import com.capgemini.chess.algorithms.data.generated.Board;
-import com.capgemini.chess.algorithms.implementation.KingInCheckValidator;
 import com.capgemini.chess.algorithms.implementation.exceptions.InvalidMoveException;
+import com.capgemini.chess.algorithms.implementation.service.KingInCheckValidator;
 
 public class King extends Piece {
 
@@ -20,11 +20,9 @@ public class King extends Piece {
 	private int deltaX;
 	private int deltaY;
 
-	//TODO do REFACTORINGU
 	@Override
 	public MoveType checkIfMoveIsValidForPiece(Board board, Coordinate from, Coordinate to) throws InvalidMoveException {
 		setDeltaXAndDeltaY(from, to);
-
 		if (isCastling(board, from, to)) {
 			return MoveType.CASTLING;
 		}
@@ -34,7 +32,6 @@ public class King extends Piece {
 
 	@Override
 	protected void validateThatPieceCanMoveThatDirection(Coordinate from, Coordinate to) throws InvalidMoveException {
-
 		if (Math.abs(deltaX) > 1 || Math.abs(deltaY) > 1) {
 			throw new InvalidMoveException("King cant move there. It is against rules for this piece");
 		}

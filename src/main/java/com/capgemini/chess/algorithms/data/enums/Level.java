@@ -1,11 +1,5 @@
 package com.capgemini.chess.algorithms.data.enums;
 
-/**
- * Definition of player's levels
- * 
- * @author Michal Bejm
- *
- */
 public enum Level {
 	
 	NEWBIE(1, 0, 0, 0.0),
